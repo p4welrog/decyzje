@@ -44,6 +44,7 @@ nav.tabs button[aria-selected="true"] .l{color:var(--bg)}
 button,select,input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 section.path{margin-top:20px;display:grid;gap:18px}
+section.path[hidden]{display:none}
 .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
 .fact{border-top:2px solid var(--accent);padding-top:6px}
 .fact .k{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
@@ -360,7 +361,8 @@ const stamp=()=>new Date().toISOString();
 
 /* zakładki */
 function showTab(t){$$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===t)));$$('section.path').forEach(s=>s.hidden=s.id!=='tab-'+t);try{localStorage.setItem('pracownia-tab',t)}catch(e){}}
-$$('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);try{history.replaceState(null,'','#'+b.dataset.tab)}catch(e){}}));
+$$('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);try{history.replaceState(null,'','#'+b.dataset.tab)}catch(e){}
+  const nav=$('nav.tabs');if(nav.getBoundingClientRect().top<=1)window.scrollTo({top:nav.offsetTop,behavior:'auto'});}));
 {let t=(location.hash||'').slice(1);if(!/^[A-E]$/.test(t)){try{t=localStorage.getItem('pracownia-tab')||'A'}catch(e){t='A'}}showTab(/^[A-E]$/.test(t)?t:'A');}
 
 /* ======================= A ======================= */
