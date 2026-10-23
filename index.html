@@ -111,102 +111,94 @@ footer{margin-top:28px;font-size:.8rem;color:var(--muted);max-width:90ch}
 <header class="top">
   <div>
     <h1>Pracownia ścieżek A–E</h1>
-    <p class="lede">Przykładowe rozwiązania zgodne z przewodnikami ścieżek A–E projektu „Projektowanie i badanie informatycznych systemów wspomagania decyzji”. W każdej zakładce: profil jednej osoby, jawna reguła i test na nowych przypadkach.</p>
+    <p class="lede">Przykładowe rozwiązania zgodne z przewodnikami ścieżek A–E (A dyskontowanie, B DOSPERT, C ekwiwalent pewności, D framing, E preferencje wielokryterialne) projektu „Projektowanie i badanie informatycznych systemów wspomagania decyzji”. W każdej zakładce: profil jednej osoby, jawna reguła i test na nowych przypadkach.</p>
   </div>
   <span class="synth"><b>●</b> Odpowiedzi uczestnika są wymyślonymi danymi z przewodników albo danymi syntetycznymi</span>
 </header>
 
 <nav class="tabs" role="tablist" aria-label="Ścieżki">
-  <button role="tab" data-tab="A" aria-selected="true"><span class="l">A</span>Preferencje wielokryterialne</button>
-  <button role="tab" data-tab="B" aria-selected="false"><span class="l">B</span>Dyskontowanie</button>
+  <button role="tab" data-tab="A" aria-selected="true"><span class="l">A</span>Dyskontowanie</button>
+  <button role="tab" data-tab="B" aria-selected="false"><span class="l">B</span>DOSPERT</button>
   <button role="tab" data-tab="C" aria-selected="false"><span class="l">C</span>Ekwiwalent pewności</button>
-  <button role="tab" data-tab="D" aria-selected="false"><span class="l">D</span>DOSPERT</button>
-  <button role="tab" data-tab="E" aria-selected="false"><span class="l">E</span>Framing</button>
+  <button role="tab" data-tab="D" aria-selected="false"><span class="l">D</span>Framing</button>
+  <button role="tab" data-tab="E" aria-selected="false"><span class="l">E</span>Preferencje wielokryterialne</button>
 </nav>
 
 <!-- ======================= A ======================= -->
-<section class="path" id="tab-A" role="tabpanel">
-  <div><h2>A · Preferencje wielokryterialne (hotel)</h2>
-  <p class="lede">Ranking pięciu swingów w stałych zakresach → wagi ROC → suma ważona dla nowych ofert. Budżet filtruje oferty przed rankingiem. Model bazowy: równe wagi 0,2.</p></div>
-  <div class="facts">
-    <div class="fact"><div class="k">Wynik procedury</div><div class="v">Wagi ROC i status profilu</div></div>
-    <div class="fact"><div class="k">Remis modelowy</div><div class="v">|U(A) − U(B)| &lt; 0,005 → TIE</div></div>
-    <div class="fact"><div class="k">Walidacja</div><div class="v">12 par z puli 24 według stałej reguły</div></div>
-    <div class="fact"><div class="k">Wrażliwość</div><div class="v">Wagi sumy rang</div></div>
-  </div>
-  <div class="cols">
-    <div class="panel">
-      <div class="hd"><span class="step">1 · Profil</span><span class="synth"><b>●</b> P01 z przewodnika</span></div>
-      <h3>Zakresy, deklarowana ważność i ranking swingów</h3>
-      <div class="scroll"><table id="A-crit"></table></div>
-      <div class="row"><label for="A-tie">Zgłoszony remis sąsiednich miejsc</label><select id="A-tie"><option value="0">brak</option><option value="12">1 i 2</option><option value="23">2 i 3</option><option value="34">3 i 4</option><option value="45">4 i 5</option></select>
-      <label for="A-budget">Budżet</label><input type="number" id="A-budget" value="400" step="10"><span>zł/noc</span></div>
-      <h3>Kontrole</h3>
-      <div class="scroll"><table id="A-cons"></table></div>
-      <div class="row"><label for="A-lin-cena">Liniowość ceny</label><select id="A-lin-cena"><option value="ok">mniej niż 2 razy / tak samo</option><option value="flag">2 razy lub więcej</option></select>
-      <label for="A-lin-odl">Liniowość odległości</label><select id="A-lin-odl"><option value="ok">mniej niż 2 razy / tak samo</option><option value="flag">2 razy lub więcej</option></select></div>
-    </div>
-    <div class="panel">
-      <div class="hd"><span class="step">2 · Reguła</span><span class="mono" id="A-ver"></span></div>
-      <div id="A-status"></div>
-      <div class="formula">U(a) = Σ w_k · v_k,   v_k = (x − najgorszy)/(najlepszy − najgorszy), przycięte do [0, 1]
-ROC: w_i = (1/n) Σ_{k=i..n} 1/k   (137, 77, 47, 27, 12)/300</div>
-      <div class="scroll"><table id="A-w"></table></div>
-      <div class="row"><label for="A-pair">Wkład kryteriów w parze</label><select id="A-pair"></select></div>
-      <div id="A-explain"></div>
-    </div>
-  </div>
-  <div class="panel">
-    <div class="hd"><span class="step">3 · Wybór 12 par z puli</span></div>
-    <p class="note">Po obliczeniu profilu, przed sesją: odrzuć pary z TIE lub NO_PREDICTION w którymkolwiek modelu i pary rozstrzygnięte tylko przez filtr; weź do 6 par różnicujących w kolejności numerów; uzupełnij parami wspólnymi. V23 i V24 służą do testu filtra.</p>
-    <div id="A-selsum"></div>
-    <details><summary>Pokaż całą pulę 24 par</summary><div class="scroll"><table id="A-pool"></table></div></details>
-  </div>
-  <div class="panel" id="A-valpanel">
-    <div class="hd"><span class="step">4 · Walidacja</span><div class="row"><label><input type="checkbox" class="sess" data-sec="A-valpanel"> tryb sesji (ukryj predykcje)</label><button class="btn" data-copy="A">Kopiuj log CSV</button></div></div>
-    <p class="sesshint callout">Tryb sesji: uczestnik wybiera bez podpowiedzi. Predykcje są zapisane wcześniej i pojawią się po wyłączeniu trybu.</p>
-    <div class="pcblock" id="A-sum"></div>
-    <div class="scroll"><table id="A-val"></table></div>
-    <div id="A-copyout"></div>
-  </div>
-</section>
-
-<!-- ======================= B ======================= -->
-<section class="path" id="tab-B" role="tabpanel" hidden>
-  <div><h2>B · Dyskontowanie odroczonych nagród (5-trial)</h2>
+<section class="path" id="tab-A" role="tabpanel" hidden>
+  <div><h2>A · Dyskontowanie odroczonych nagród (5-trial)</h2>
   <p class="lede">Pięć wyborów 500 zł teraz albo 1000 zł później według drzewa Koffarnusa i Bickela (2014). ED50 odczytujemy z tabeli dla końcowego węzła i piątej odpowiedzi; k = 1/ED50, V = A/(1 + kD).</p></div>
   <div class="facts">
     <div class="fact"><div class="k">Wynik procedury</div><div class="v">Jedna z 32 wartości ED50</div></div>
     <div class="fact"><div class="k">Model bazowy</div><div class="v">Ta sama hiperbola, k0 = 0,01 / dzień</div></div>
     <div class="fact"><div class="k">Remis modelowy</div><div class="v">|V − X| &lt; 0,01 zł → TIE</div></div>
-    <div class="fact"><div class="k">Walidacja</div><div class="v">12 nowych wyborów, A = 1000 zł</div></div>
+    <div class="fact"><div class="k">Walidacja</div><div class="v">10 nowych wyborów (przewodnik: 8–12), A = 1000 zł</div></div>
   </div>
   <div class="cols">
     <div class="panel">
       <div class="hd"><span class="step">1 · Profil</span><span class="synth"><b>●</b> ścieżka 2,1,2,1,2 z przewodnika</span></div>
       <h3>Pięć wyborów</h3>
-      <div class="qcard" id="B-q"></div>
-      <div class="scroll"><table id="B-hist"></table></div>
-      <div class="row"><button class="btn" id="B-reset">Zacznij od nowa</button><button class="btn" id="B-demo">Wczytaj przykład 2,1,2,1,2</button><button class="btn" id="B-low">Wszystko NOW</button><button class="btn" id="B-high">Wszystko LATER</button></div>
+      <div class="qcard" id="A-q"></div>
+      <div class="scroll"><table id="A-hist"></table></div>
+      <div class="row"><button class="btn" id="A-reset">Zacznij od nowa</button><button class="btn" id="A-demo">Wczytaj przykład 2,1,2,1,2</button><button class="btn" id="A-low">Wszystko NOW</button><button class="btn" id="A-high">Wszystko LATER</button></div>
+    </div>
+    <div class="panel">
+      <div class="hd"><span class="step">2 · Reguła</span><span class="mono" id="A-ver"></span></div>
+      <div id="A-res"></div>
+      <div class="row"><label for="A-X">Teraz</label><input type="number" id="A-X" value="600"><label for="A-D">albo 1000 zł za</label><input type="number" id="A-D" value="90"><span>dni</span></div>
+      <div id="A-calc"></div>
+      <div id="A-chart"></div>
+    </div>
+  </div>
+  <div class="panel" id="A-valpanel">
+    <div class="hd"><span class="step">3 · Walidacja: 10 nowych wyborów</span><div class="row"><label><input type="checkbox" class="sess" data-sec="A-valpanel"> tryb sesji</label><button class="btn" data-copy="A">Kopiuj log CSV</button></div></div>
+    <p class="note">Bodźce z przewodnika (7, 30, 90, 180 i 365 dni, po dwie kwoty teraz). Baseline k0 = 0,01 przewiduje prawie zawsze „teraz”; wynik porównania zależy od wyboru k0, ustalonego przed testem.</p>
+    <p class="sesshint callout">Tryb sesji: predykcje ukryte do zebrania wyborów.</p>
+    <div class="pcblock" id="A-sum"></div>
+    <div class="scroll"><table id="A-val"></table></div>
+    <div id="A-copyout"></div>
+  </div>
+</section>
+<!-- ======================= B ======================= -->
+<section class="path" id="tab-B" role="tabpanel" hidden>
+  <div><h2>B · Domenowy profil ryzyka DOSPERT</h2>
+  <p class="lede">DOSPERT 2006, 30 pozycji, skala 1–7: gotowość W, postrzegane ryzyko R i opcjonalnie korzyści B. Średnie domen liczymy według klucza. Mapowanie W → c jest autorską regułą aplikacji, a nie wynikiem DOSPERT.</p></div>
+  <div class="facts">
+    <div class="fact"><div class="k">Reguła</div><div class="v">Score = Benefit − c · Risk, c = 1 − (W − 1)/6</div></div>
+    <div class="fact"><div class="k">Model bazowy</div><div class="v">c0 = 0,8 (odpowiada W = 2,2)</div></div>
+    <div class="fact"><div class="k">Remis modelowy</div><div class="v">|ΔScore| &lt; 0,005 → TIE</div></div>
+    <div class="fact"><div class="k">Walidacja</div><div class="v">8–12 par; gotowy wariant: 12 z puli 16 scenariuszy rekreacji</div></div>
+  </div>
+  <div class="cols">
+    <div class="panel">
+      <div class="hd"><span class="step">1 · Profil</span><span class="synth"><b>●</b> odpowiedzi z przewodnika</span></div>
+      <h3>Średnie domen</h3>
+      <div class="scroll"><table id="B-prof"></table></div>
+      <details><summary>Edytuj 30 pozycji (W, R, B)</summary><div class="scroll"><table id="B-items"></table></div></details>
+      <div class="row"><label for="B-dom">Domena aplikacji</label><select id="B-dom"></select></div>
     </div>
     <div class="panel">
       <div class="hd"><span class="step">2 · Reguła</span><span class="mono" id="B-ver"></span></div>
+      <div class="formula">t = (W − 1)/6,  c = 1 − t       wariant wrażliwości: c' = 1 − √t
+Score(x) = Benefit(x) − c · Risk(x),  Benefit, Risk ∈ [0, 1]</div>
       <div id="B-res"></div>
-      <div class="row"><label for="B-X">Teraz</label><input type="number" id="B-X" value="600"><label for="B-D">albo 1000 zł za</label><input type="number" id="B-D" value="90"><span>dni</span></div>
-      <div id="B-calc"></div>
-      <div id="B-chart"></div>
+      <div class="scroll"><table id="B-check"></table></div>
     </div>
   </div>
+  <div class="panel">
+    <div class="hd"><span class="step">3 · Gotowy wariant: wybór 12 par z puli</span></div>
+    <p class="note">Zespół może przygotować własne scenariusze według tych samych zasad albo skorzystać z gotowej puli. Benefit: 0 = popołudnie bez atrakcyjności, 1 = bardzo atrakcyjne. Risk: 0 = plan przebiegnie zgodnie z oczekiwaniami, 1 = duża niepewność przebiegu; nie jest prawdopodobieństwem urazu. Próg c* = ΔBenefit/ΔRisk; para różnicuje modele, gdy c* leży między c a c0. Reguła: odrzuć |c* − c| &lt; 0,02 i |c* − c0| &lt; 0,02, weź do 6 par różnicujących, uzupełnij zgodnymi, a w razie braku kolejnymi różnicującymi.</p>
+    <div id="B-selsum"></div>
+    <details><summary>Pokaż całą pulę 16 par</summary><div class="scroll"><table id="B-pool"></table></div></details>
+  </div>
   <div class="panel" id="B-valpanel">
-    <div class="hd"><span class="step">3 · Walidacja: 12 nowych wyborów</span><div class="row"><label><input type="checkbox" class="sess" data-sec="B-valpanel"> tryb sesji</label><button class="btn" data-copy="B">Kopiuj log CSV</button></div></div>
-    <p class="note">Bodźce z przewodnika (7, 14, 30, 90, 180 i 365 dni). Baseline k0 = 0,01 przewiduje prawie zawsze „teraz”; wynik porównania zależy od wyboru k0, ustalonego przed testem.</p>
-    <p class="sesshint callout">Tryb sesji: predykcje ukryte do zebrania wyborów.</p>
+    <div class="hd"><span class="step">4 · Walidacja</span><div class="row"><label><input type="checkbox" class="sess" data-sec="B-valpanel"> tryb sesji</label><button class="btn" data-copy="B">Kopiuj log CSV</button></div></div>
+    <p class="sesshint callout">Tryb sesji: uczestnik widzi pełne opisy scenariuszy, bez indeksów i predykcji.</p>
     <div class="pcblock" id="B-sum"></div>
     <div class="scroll"><table id="B-val"></table></div>
     <div id="B-copyout"></div>
   </div>
 </section>
-
 <!-- ======================= C ======================= -->
 <section class="path" id="tab-C" role="tabpanel" hidden>
   <div><h2>C · Ekwiwalent pewności loterii 50/50</h2>
@@ -215,7 +207,7 @@ ROC: w_i = (1/n) Σ_{k=i..n} 1/k   (137, 77, 47, 27, 12)/300</div>
     <div class="fact"><div class="k">Reguła</div><div class="v">CE(X) = EV(X) · q(X), interpolacja bez ekstrapolacji</div></div>
     <div class="fact"><div class="k">Model bazowy</div><div class="v">Wybór większej EV</div></div>
     <div class="fact"><div class="k">Remis modelowy</div><div class="v">|CE − S| &lt; 0,01 zł → TIE</div></div>
-    <div class="fact"><div class="k">Walidacja</div><div class="v">6 stawek × 2 kwoty z reguły S1/S2</div></div>
+    <div class="fact"><div class="k">Walidacja</div><div class="v">8–12 decyzji; gotowy wariant: 6 stawek × S1/S2</div></div>
   </div>
   <div class="cols">
     <div class="panel">
@@ -236,58 +228,16 @@ CE_est(X) = EV(X) · q(X),  granice z q_low i q_high tą samą interpolacją</di
   </div>
   <div class="panel" id="C-valpanel">
     <div class="hd"><span class="step">3 · Walidacja: 12 nowych decyzji</span><div class="row"><label><input type="checkbox" class="sess" data-sec="C-valpanel"> tryb sesji</label><button class="btn" data-copy="C">Kopiuj log CSV</button></div></div>
-    <p class="note">Stawki 200, 500, 2000, 3000, 5000 i 8000 zł. S1 = 80% dolnej granicy przeniesionego CE (przewidywanie wspólne z EV), S2 = środek między górną granicą CE a EV (rozróżnia modele); zaokrąglenie w dół do 1 zł (X ≤ 500) albo 100 zł.</p>
+    <p class="note">Gotowy wariant ze stałą regułą doboru (zespół może też dobrać 8–12 kwot samodzielnie przed sesją). Stawki 200, 500, 2000, 3000, 5000 i 8000 zł. S1 = 80% dolnej granicy przeniesionego CE (przewidywanie wspólne z EV), S2 = środek między górną granicą CE a EV (rozróżnia modele); zaokrąglenie w dół do 1 zł (X ≤ 500) albo 100 zł.</p>
     <p class="sesshint callout">Tryb sesji: predykcje ukryte do zebrania wyborów.</p>
     <div class="pcblock" id="C-sum"></div>
     <div class="scroll"><table id="C-val"></table></div>
     <div id="C-copyout"></div>
   </div>
 </section>
-
 <!-- ======================= D ======================= -->
 <section class="path" id="tab-D" role="tabpanel" hidden>
-  <div><h2>D · Domenowy profil ryzyka DOSPERT</h2>
-  <p class="lede">DOSPERT 2006, 30 pozycji, skala 1–7: gotowość W, postrzegane ryzyko R i opcjonalnie korzyści B. Średnie domen liczymy według klucza. Mapowanie W → c jest autorską regułą aplikacji, a nie wynikiem DOSPERT.</p></div>
-  <div class="facts">
-    <div class="fact"><div class="k">Reguła</div><div class="v">Score = Benefit − c · Risk, c = 1 − (W − 1)/6</div></div>
-    <div class="fact"><div class="k">Model bazowy</div><div class="v">c0 = 0,8 (odpowiada W = 2,2)</div></div>
-    <div class="fact"><div class="k">Remis modelowy</div><div class="v">|ΔScore| &lt; 0,005 → TIE</div></div>
-    <div class="fact"><div class="k">Walidacja</div><div class="v">12 par z puli 16 scenariuszy rekreacji</div></div>
-  </div>
-  <div class="cols">
-    <div class="panel">
-      <div class="hd"><span class="step">1 · Profil</span><span class="synth"><b>●</b> odpowiedzi z przewodnika</span></div>
-      <h3>Średnie domen</h3>
-      <div class="scroll"><table id="D-prof"></table></div>
-      <details><summary>Edytuj 30 pozycji (W, R, B)</summary><div class="scroll"><table id="D-items"></table></div></details>
-      <div class="row"><label for="D-dom">Domena aplikacji</label><select id="D-dom"></select></div>
-    </div>
-    <div class="panel">
-      <div class="hd"><span class="step">2 · Reguła</span><span class="mono" id="D-ver"></span></div>
-      <div class="formula">t = (W − 1)/6,  c = 1 − t       wariant wrażliwości: c' = 1 − √t
-Score(x) = Benefit(x) − c · Risk(x),  Benefit, Risk ∈ [0, 1]</div>
-      <div id="D-res"></div>
-      <div class="scroll"><table id="D-check"></table></div>
-    </div>
-  </div>
-  <div class="panel">
-    <div class="hd"><span class="step">3 · Wybór 12 par z puli</span></div>
-    <p class="note">Benefit: 0 = popołudnie bez atrakcyjności, 1 = bardzo atrakcyjne. Risk: 0 = plan przebiegnie zgodnie z oczekiwaniami, 1 = duża niepewność przebiegu; nie jest prawdopodobieństwem urazu. Próg c* = ΔBenefit/ΔRisk; para różnicuje modele, gdy c* leży między c a c0. Reguła: odrzuć |c* − c| &lt; 0,02 i |c* − c0| &lt; 0,02, weź do 6 par różnicujących, uzupełnij zgodnymi, a w razie braku kolejnymi różnicującymi.</p>
-    <div id="D-selsum"></div>
-    <details><summary>Pokaż całą pulę 16 par</summary><div class="scroll"><table id="D-pool"></table></div></details>
-  </div>
-  <div class="panel" id="D-valpanel">
-    <div class="hd"><span class="step">4 · Walidacja</span><div class="row"><label><input type="checkbox" class="sess" data-sec="D-valpanel"> tryb sesji</label><button class="btn" data-copy="D">Kopiuj log CSV</button></div></div>
-    <p class="sesshint callout">Tryb sesji: uczestnik widzi pełne opisy scenariuszy, bez indeksów i predykcji.</p>
-    <div class="pcblock" id="D-sum"></div>
-    <div class="scroll"><table id="D-val"></table></div>
-    <div id="D-copyout"></div>
-  </div>
-</section>
-
-<!-- ======================= E ======================= -->
-<section class="path" id="tab-E" role="tabpanel" hidden>
-  <div><h2>E · Framing i stabilność wyboru</h2>
+  <div><h2>D · Framing i stabilność wyboru</h2>
   <p class="lede">Ten sam problem opisany przez zachowanie albo utratę punktów. Wybór A (pewny, kod SAFE) albo B (niepewny, kod RISKY). Oba opisy generujemy z jednego rekordu liczbowego. Nie liczymy accuracy.</p></div>
   <div class="facts">
     <div class="fact"><div class="k">Wynik profilowania</div><div class="v">FI = pary ze zmianą / ważne pary</div></div>
@@ -297,27 +247,73 @@ Score(x) = Benefit(x) − c · Risk(x),  Benefit, Risk ∈ [0, 1]</div>
   </div>
   <div class="panel">
     <div class="hd"><span class="step">1 · Profilowanie: 10 par, 20 wyborów</span><span class="synth"><b>●</b> odpowiedzi z przewodnika</span></div>
-    <div class="stats" id="E-fi"></div>
-    <div class="scroll"><table id="E-prof"></table></div>
+    <div class="stats" id="D-fi"></div>
+    <div class="scroll"><table id="D-prof"></table></div>
     <p class="note">Blok 1 pokazuje po jednej wersji każdej pary (P01 zachowanie, P02 utrata, naprzemiennie), blok 2 ich odpowiedniki w tej samej kolejności, oddzielone zadaniem neutralnym. Brak jednej wersji wyłącza parę z FI.</p>
   </div>
   <div class="panel">
     <div class="hd"><span class="step">2 · Etap standardowy: 12 wyborów wstępnych</span></div>
     <p class="note">Kolejność: N01 G, N02 L, N03 G, N04 L, N05 G, N06 L, potem N01 L, N02 G, N03 L, N04 G, N05 L, N06 G. Wszystkie wybory wstępne zbieramy przed etapem zbalansowanym.</p>
-    <div class="scroll"><table id="E-init"></table></div>
+    <div class="scroll"><table id="D-init"></table></div>
   </div>
   <div class="panel">
-    <div class="hd"><span class="step">3 · Etap zbalansowany: 12 wyborów końcowych</span><button class="btn" data-copy="E">Kopiuj log CSV</button></div>
-    <div class="scroll"><table id="E-final"></table></div>
+    <div class="hd"><span class="step">3 · Etap zbalansowany: 12 wyborów końcowych</span><button class="btn" data-copy="D">Kopiuj log CSV</button></div>
+    <div class="scroll"><table id="D-final"></table></div>
     <h3>Pytania o rozumienie (obowiązkowe) i ocena serii</h3>
-    <div class="scroll"><table id="E-comp"></table></div>
-    <div class="row"><label for="E-transp">Transparentność całej serii (1–7)</label><select id="E-transp"></select></div>
-    <div class="stats" id="E-sum"></div>
+    <div class="scroll"><table id="D-comp"></table></div>
+    <div class="row"><label for="D-transp">Transparentność całej serii (1–7)</label><select id="D-transp"></select></div>
+    <div class="stats" id="D-sum"></div>
+    <div id="D-copyout"></div>
+  </div>
+</section>
+<!-- ======================= E ======================= -->
+<section class="path" id="tab-E" role="tabpanel">
+  <div><h2>E · Preferencje wielokryterialne (hotel)</h2>
+  <p class="lede">Ranking pięciu swingów w stałych zakresach → wagi ROC → suma ważona dla nowych ofert. Budżet filtruje oferty przed rankingiem. Model bazowy: równe wagi 0,2.</p></div>
+  <div class="facts">
+    <div class="fact"><div class="k">Wynik procedury</div><div class="v">Wagi ROC i status profilu</div></div>
+    <div class="fact"><div class="k">Remis modelowy</div><div class="v">|U(A) − U(B)| &lt; 0,005 → TIE</div></div>
+    <div class="fact"><div class="k">Walidacja</div><div class="v">12 par z kandydatów V01–V22 według stałej reguły</div></div>
+    <div class="fact"><div class="k">Wrażliwość</div><div class="v">Wagi sumy rang</div></div>
+  </div>
+  <div class="cols">
+    <div class="panel">
+      <div class="hd"><span class="step">1 · Profil</span><span class="synth"><b>●</b> P01 z przewodnika</span></div>
+      <h3>Zakresy, deklarowana ważność i ranking swingów</h3>
+      <div class="scroll"><table id="E-crit"></table></div>
+      <div class="row"><label for="E-tie">Zgłoszony remis sąsiednich miejsc</label><select id="E-tie"><option value="0">brak</option><option value="12">1 i 2</option><option value="23">2 i 3</option><option value="34">3 i 4</option><option value="45">4 i 5</option></select>
+      <label for="E-budget">Budżet</label><input type="number" id="E-budget" value="400" step="10"><span>zł/noc</span></div>
+      <h3>Kontrole</h3>
+      <div class="scroll"><table id="E-cons"></table></div>
+      <div class="row"><label for="E-lin-cena">Liniowość ceny</label><select id="E-lin-cena"><option value="ok">mniej niż 2 razy / tak samo</option><option value="flag">2 razy lub więcej</option></select>
+      <label for="E-lin-odl">Liniowość odległości</label><select id="E-lin-odl"><option value="ok">mniej niż 2 razy / tak samo</option><option value="flag">2 razy lub więcej</option></select></div>
+    </div>
+    <div class="panel">
+      <div class="hd"><span class="step">2 · Reguła</span><span class="mono" id="E-ver"></span></div>
+      <div id="E-status"></div>
+      <div class="formula">U(a) = Σ w_k · v_k,   v_k = (x − najgorszy)/(najlepszy − najgorszy), przycięte do [0, 1]
+ROC: w_i = (1/n) Σ_{k=i..n} 1/k   (137, 77, 47, 27, 12)/300</div>
+      <div class="scroll"><table id="E-w"></table></div>
+      <div class="row"><label for="E-pair">Wkład kryteriów w parze</label><select id="E-pair"></select></div>
+      <div id="E-explain"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="hd"><span class="step">3 · Wybór 12 par z puli</span></div>
+    <p class="note">Po obliczeniu profilu, przed sesją: kandydaci to V01–V22; odrzuć pary z TIE lub NO_PREDICTION w którymkolwiek modelu, z wartościami spoza zakresów i rozstrzygnięte tylko przez budżet (budget_only); weź najwyżej 6 par różnicujących w kolejności numerów; uzupełnij parami wspólnymi, bez dobierania dalszych różnicujących. V23 i V24 służą wyłącznie do testu filtra.</p>
+    <div id="E-selsum"></div>
+    <details><summary>Pokaż całą pulę 24 par</summary><div class="scroll"><table id="E-pool"></table></div></details>
+  </div>
+  <div class="panel" id="E-valpanel">
+    <div class="hd"><span class="step">4 · Walidacja</span><div class="row"><label><input type="checkbox" class="sess" data-sec="E-valpanel"> tryb sesji (ukryj predykcje)</label><button class="btn" data-copy="E">Kopiuj log CSV</button></div></div>
+    <p class="sesshint callout">Tryb sesji: uczestnik wybiera bez podpowiedzi. Predykcje są zapisane wcześniej i pojawią się po wyłączeniu trybu.</p>
+    <div class="pcblock" id="E-sum"></div>
+    <div class="scroll"><table id="E-val"></table></div>
     <div id="E-copyout"></div>
   </div>
 </section>
 
-<footer>Liczby kontrolne z przewodników przeliczone w kodzie strony: A — wagi ROC 137/300…12/300, para V01: U = 0,564 i 0,475 (równe wagi 0,449 i 0,543); B — ścieżka 16→24→20→22→21, ED50 = 210,9 dnia, V(1000 zł, 90 dni) = 700,90 zł, k0: 526,32 zł; C — q = 0,9/0,7/0,5, CE(2000) = 677,78 zł (log: 639,79 zł), granice 577,78–777,78 zł; D — W = 29/6, c = 13/36, P1: 0,578 / 0,683, P2 odwraca się przy c'; E — FI = 4/10, przed 3/6, po 1/6, rewizje 2/12.</footer>
+<footer>Liczby kontrolne z przewodników przeliczone w kodzie strony: A — ścieżka 16→24→20→22→21, ED50 = 210,9 dnia, V(1000 zł, 90 dni) = 700,90 zł, k0: 526,32 zł, model „później” w 5 z 10 prób; B — W = 29/6, c = 13/36, P1: 0,578 / 0,683, P2 odwraca się przy c', pula: odpadają P07 i P15; C — q = 0,9/0,7/0,5, CE(2000) = 677,78 zł (log: 639,79 zł), granice 577,78–777,78 zł; D — FI = 4/10, rozbieżność przed 3/6, po 1/6 (kontrola), rewizje 2/12; E — wagi ROC 137/300…12/300, V01: U = 0,563785 i 0,475056 (równe wagi 0,449040 i 0,543333), ROC 9/12 wobec 7/12.</footer>
 </div>
 
 <script>
@@ -369,11 +365,11 @@ $$('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{showTab(b.datas
 const A={
   crit:[{id:'cena',name:'Cena za noc',unit:'zł',worst:480,best:180},{id:'odl',name:'Odległość od centrum',unit:'km',worst:6.0,best:0.5},
         {id:'ocena',name:'Ocena gości',unit:'/10',worst:6.5,best:9.5},{id:'pow',name:'Powierzchnia pokoju',unit:'m²',worst:14,best:32},
-        {id:'anul',name:'Bezpłatne anulowanie',unit:'h',worst:0,best:48}],
+        {id:'anul',name:'Okno anulowania po rezerwacji',unit:'h',worst:0,best:48}],
   ranks:{ocena:1,cena:2,odl:3,anul:4,pow:5}, imp:{cena:7,odl:4,ocena:5,pow:3,anul:4},
   cons:[['cena','ocena',2],['odl','pow',1],['anul','odl',2],['pow','cena',2]],
   pool:[[[250,5.4,8.4,16,30],[350,1.6,7.7,29,12]],[[200,2.2,8.3,28,12],[320,3.7,7.6,24,42]],[[300,1.3,7.2,27,30],[400,3.5,9.2,22,18]],[[400,2.1,9.2,27,30],[180,3.8,8.0,22,18]],[[250,1.5,8.8,30,6],[350,3.2,7.5,22,42]],[[380,4.0,7.9,31,42],[310,2.7,8.5,15,6]],[[280,5.5,9.3,31,36],[360,1.1,8.0,23,24]],[[400,0.9,7.4,20,12],[300,5.6,8.1,27,36]],[[230,2.1,9.1,14,30],[320,3.3,8.0,29,18]],[[400,2.1,8.8,32,6],[240,3.7,7.7,24,42]],[[240,3.2,8.0,16,6],[360,4.5,7.3,32,42]],[[400,1.2,7.1,24,30],[210,3.1,9.4,20,18]],[[360,0.8,7.3,19,18],[280,4.7,8.2,26,36]],[[400,5.5,8.6,28,36],[200,0.6,7.6,21,24]],[[210,2.2,9.0,15,48],[320,3.9,7.8,29,24]],[[210,5.3,9.0,18,30],[350,0.9,7.7,30,12]],[[360,0.8,9.3,21,24],[300,4.8,7.1,27,42]],[[390,3.8,8.0,23,42],[270,2.5,8.7,29,0]],[[400,2.5,9.0,27,6],[190,4.2,7.9,21,42]],[[210,5.8,8.8,25,0],[340,0.7,8.1,20,42]],[[210,1.5,7.6,20,12],[400,4.8,8.3,26,24]],[[390,4.1,9.1,30,18],[290,3.0,7.0,14,42]],[[430,1.0,8.6,26,24],[330,3.0,7.6,20,24]],[[300,2.0,7.8,22,12],[460,0.8,9.0,28,48]]],
-  ans:'A A B B A A A B A A B B B B A A A B A B A A B A'.split(' ')
+  ans:'A A B A A B A B B A B B B B A B A B A B A A B A'.split(' ')
 };
 const ROC5=[137,77,47,27,12].map(x=>x/300), RS5=[5,4,3,2,1].map(x=>x/15);
 const aid=i=>'V'+String(i+1).padStart(2,'0');
@@ -381,12 +377,15 @@ function aProfile(){
   const ids=A.crit.map(c=>c.id), pos=ids.map(i=>A.ranks[i]);
   const complete=[1,2,3,4,5].every(r=>pos.filter(x=>x===r).length===1);
   if(!complete) return {complete:false};
-  const tie=$('#A-tie').value;
+  const tie=$('#E-tie').value;
   const mk=base=>{const w={};ids.forEach(i=>w[i]=base[A.ranks[i]-1]);
     if(tie!=='0'){const r1=+tie[0],r2=+tie[1];const a=ids.find(i=>A.ranks[i]===r1),b=ids.find(i=>A.ranks[i]===r2);const m=(w[a]+w[b])/2;w[a]=m;w[b]=m;}return w;};
-  const cons=A.cons.map(([x,y,ch])=>{const chosen=ch===1?x:y,other=ch===1?y:x;return A.ranks[chosen]<A.ranks[other];});
+  if($('#E-budget').value==='') return {complete:false};
+  const tp=tie!=='0'?[ids.find(i=>A.ranks[i]===+tie[0]),ids.find(i=>A.ranks[i]===+tie[1])]:[];
+  const cons=A.cons.map(([x,y,ch])=>{if(tp.includes(x)&&tp.includes(y))return ch===3;if(ch===3)return false;
+    const chosen=ch===1?x:y,other=ch===1?y:x;return A.ranks[chosen]<A.ranks[other];});
   const nc=cons.filter(Boolean).length;
-  const flags=[];if($('#A-lin-cena').value==='flag')flags.push('nonlinear_cena');if($('#A-lin-odl').value==='flag')flags.push('nonlinear_odl');
+  const flags=[];if($('#E-lin-cena').value==='flag')flags.push('nonlinear_cena');if($('#E-lin-odl').value==='flag')flags.push('nonlinear_odl');
   const status=nc>=3?'valid':'inconsistent';
   return {complete:true,w:mk(ROC5),ws:mk(RS5),we:Object.fromEntries(ids.map(i=>[i,.2])),nc,cons,flags,status,tie:tie!=='0'};
 }
@@ -395,83 +394,84 @@ function aU(o,w){let U=0;const parts=A.crit.map((c,i)=>{const r=aVal(c,o[i]);con
 function aPred(p,w,budget){
   const ok=[p[0][0]<=budget,p[1][0]<=budget];
   if(!ok[0]&&!ok[1])return {pred:'NO_PREDICTION',filt:'obie poza budżetem'};
-  if(!ok[0])return {pred:'B',filt:'A poza budżetem'}; if(!ok[1])return {pred:'A',filt:'B poza budżetem'};
+  if(!ok[0])return {pred:'B',filt:'budget_only (A poza budżetem)'}; if(!ok[1])return {pred:'A',filt:'budget_only (B poza budżetem)'};
   const a=aU(p[0],w).U,b=aU(p[1],w).U;
   return {pred:Math.abs(a-b)<0.005?'TIE':(a>b?'A':'B'),ua:a,ub:b};
 }
 const aStr=o=>`${o[0]} zł · ${String(o[1]).replace('.',',')} km · ${String(o[2]).replace('.',',')} · ${o[3]} m² · ${o[4]} h`;
 function renderA(){
-  $('#A-crit').innerHTML=`<thead><tr><th>Kryterium</th><th class="num">Najgorszy</th><th class="num">Najlepszy</th><th>Ważność 1–7</th><th>Ranga swingu</th></tr></thead><tbody>${
+  $('#E-crit').innerHTML=`<thead><tr><th>Kryterium</th><th class="num">Najgorszy</th><th class="num">Najlepszy</th><th>Ważność 1–7</th><th>Ranga swingu</th></tr></thead><tbody>${
     A.crit.map(c=>`<tr><td>${c.name}</td><td class="num">${String(c.worst).replace('.',',')} ${c.unit}</td><td class="num">${String(c.best).replace('.',',')} ${c.unit}</td>
-    <td><select id="A-imp-${c.id}" data-id="${c.id}" aria-label="Deklarowana ważność: ${c.name}">${opt([1,2,3,4,5,6,7],A.imp[c.id])}</select></td>
-    <td><select id="A-r-${c.id}" data-id="${c.id}" aria-label="Ranga: ${c.name}">${opt([1,2,3,4,5],A.ranks[c.id])}</select></td></tr>`).join('')}</tbody>`;
-  $$('#A-crit select[id^="A-r-"]').forEach(s=>s.addEventListener('change',()=>{A.ranks[s.dataset.id]=+s.value;updateA();}));
-  $$('#A-crit select[id^="A-imp-"]').forEach(s=>s.addEventListener('change',()=>{A.imp[s.dataset.id]=+s.value;updateA();}));
+    <td><select id="E-imp-${c.id}" data-id="${c.id}" aria-label="Deklarowana ważność: ${c.name}">${opt([1,2,3,4,5,6,7],A.imp[c.id])}</select></td>
+    <td><select id="E-r-${c.id}" data-id="${c.id}" aria-label="Ranga: ${c.name}">${opt([1,2,3,4,5],A.ranks[c.id])}</select></td></tr>`).join('')}</tbody>`;
+  $$('#E-crit select[id^="E-r-"]').forEach(s=>s.addEventListener('change',()=>{A.ranks[s.dataset.id]=+s.value;updateA();}));
+  $$('#E-crit select[id^="E-imp-"]').forEach(s=>s.addEventListener('change',()=>{A.imp[s.dataset.id]=+s.value;updateA();}));
   const nm=id=>A.crit.find(c=>c.id===id).name;
-  $('#A-cons').innerHTML=`<thead><tr><th>Porównanie swingów</th><th>Wybór</th><th>Zgodny z rankingiem</th></tr></thead><tbody>${
-    A.cons.map((c,i)=>`<tr><td>${nm(c[0])} – ${nm(c[1])}</td><td><select id="A-c-${i}" data-i="${i}" aria-label="Kontrola ${i+1}">${opt([1,2],c[2],[nm(c[0]),nm(c[1])])}</select></td><td id="A-cok-${i}"></td></tr>`).join('')}</tbody>`;
-  $$('#A-cons select').forEach(s=>s.addEventListener('change',()=>{A.cons[+s.dataset.i][2]=+s.value;updateA();}));
-  ['#A-tie','#A-budget','#A-lin-cena','#A-lin-odl','#A-pair'].forEach(s=>$(s).addEventListener(s==='#A-budget'?'input':'change',updateA));
+  $('#E-cons').innerHTML=`<thead><tr><th>Porównanie swingów</th><th>Wybór</th><th>Zgodny z rankingiem</th></tr></thead><tbody>${
+    A.cons.map((c,i)=>`<tr><td>${nm(c[0])} – ${nm(c[1])}</td><td><select id="E-c-${i}" data-i="${i}" aria-label="Kontrola ${i+1}">${opt([1,2,3],c[2],[nm(c[0]),nm(c[1]),'obie równie ważne'])}</select></td><td id="E-cok-${i}"></td></tr>`).join('')}</tbody>`;
+  $$('#E-cons select').forEach(s=>s.addEventListener('change',()=>{A.cons[+s.dataset.i][2]=+s.value;updateA();}));
+  ['#E-tie','#E-budget','#E-lin-cena','#E-lin-odl','#E-pair'].forEach(s=>$(s).addEventListener(s==='#E-budget'?'input':'change',updateA));
   updateA();
 }
 function updateA(){
-  const P=aProfile(), budget=+$('#A-budget').value||Infinity;
+  const P=aProfile(), budget=+$('#E-budget').value||Infinity;
   const sorted=[...A.crit].sort((a,b)=>A.ranks[a.id]-A.ranks[b.id]);
-  $('#A-ver').textContent=P.complete?`A-ROC-v1 · ${sorted.map(c=>c.id).join('>')}`:'profil niekompletny';
-  if(P.complete) A.cons.forEach((c,i)=>$(`#A-cok-${i}`).innerHTML=P.cons[i]?'<span class="ok">tak</span>':'<span class="no">nie</span>');
-  $('#A-status').innerHTML=!P.complete?'<p class="pill bad">incomplete: każda pozycja 1–5 musi wystąpić raz. Aplikacja wstrzymuje predykcje.</p>':
+  $('#E-ver').textContent=P.complete?`E_ROC_v1 · ${sorted.map(c=>c.id).join('>')}`:'profil niekompletny';
+  if(P.complete) A.cons.forEach((c,i)=>$(`#E-cok-${i}`).innerHTML=P.cons[i]?'<span class="ok">tak</span>':'<span class="no">nie</span>');
+  $('#E-status').innerHTML=!P.complete?'<p class="pill bad">incomplete: brak rangi, budżetu lub kontroli; każda pozycja 1–5 musi wystąpić raz. Aplikacja wstrzymuje predykcje.</p>':
     `<div class="row"><span class="pill ${P.status==='valid'?'good':'warn'}">${P.status}${P.tie?', tie_reported':''}</span><span class="pill">spójność ${P.nc}/4</span>${P.flags.map(f=>`<span class="pill warn">${f}</span>`).join('')}</div>
     ${P.status!=='valid'?'<p class="note">Spójność 2/4 lub mniej: sprawdź rozumienie; możliwe jedno powtórzenie rankingu jako osobny pomiar. Nie wybieramy „ładniejszego” wyniku.</p>':''}
     ${P.flags.length?'<p class="note">Flaga liniowości trafia do raportu i analizy błędów; reguła pozostaje liniowa.</p>':''}`;
-  if(!P.complete){['#A-w','#A-explain','#A-selsum','#A-pool','#A-val','#A-sum'].forEach(s=>$(s).innerHTML='');CSV.A=()=>'';return;}
+  if(!P.complete){['#E-w','#E-explain','#E-selsum','#E-pool','#E-val','#E-sum'].forEach(s=>$(s).innerHTML='');CSV.E=()=>'';return;}
   let sR=0;
-  $('#A-w').innerHTML=`<thead><tr><th>Ranga</th><th>Kryterium</th><th class="num">Ważność 1–7</th><th class="num">ROC (model)</th><th class="num">Równe (bazowy)</th><th class="num">Suma rang</th></tr></thead><tbody>${
+  $('#E-w').innerHTML=`<thead><tr><th>Ranga</th><th>Kryterium</th><th class="num">Ważność 1–7</th><th class="num">ROC (model)</th><th class="num">Równe (bazowy)</th><th class="num">Suma rang</th></tr></thead><tbody>${
     sorted.map(c=>{sR+=P.w[c.id];return `<tr><td class="num">${A.ranks[c.id]}</td><td>${c.name}</td><td class="num">${A.imp[c.id]}</td><td class="num">${fmt(P.w[c.id],6)}</td><td class="num">0,200000</td><td class="num">${fmt(P.ws[c.id],4)}</td></tr>`}).join('')}
     <tr><td></td><td>Suma</td><td></td><td class="num">${fmt(sR,6)}</td><td class="num">1,000000</td><td></td></tr></tbody>`;
   /* pula i selekcja */
   const pool=A.pool.map((p,i)=>{const r=aPred(p,P.w,budget),e=aPred(p,P.we,budget),s=aPred(p,P.ws,budget);
-    const ok=UNAMB(r.pred)&&UNAMB(e.pred)&&!r.filt&&!e.filt;return {i,id:aid(i),p,r,e,s,ok,diff:ok&&r.pred!==e.pred};});
+    const oor=A.crit.some((c,k)=>aVal(c,p[0][k]).out||aVal(c,p[1][k]).out),cand=i<22;
+    const ok=cand&&!oor&&UNAMB(r.pred)&&UNAMB(e.pred)&&!r.filt&&!e.filt;return {i,id:aid(i),p,r,e,s,ok,oor,cand,diff:ok&&r.pred!==e.pred};});
   const diff=pool.filter(x=>x.diff).map(x=>x.i), com=pool.filter(x=>x.ok&&!x.diff).map(x=>x.i);
   const nd=Math.min(6,diff.length); let sel=[...diff.slice(0,nd),...com.slice(0,12-nd)];
   if(sel.length<12) sel=[...sel,...diff.slice(nd,nd+12-sel.length)];
   sel.sort((a,b)=>a-b); const selSet=new Set(sel);
   const ndSel=sel.filter(i=>pool[i].diff).length;
-  $('#A-selsum').innerHTML=`<div class="row"><span class="pill acc">Różnicujące: ${diff.length}</span><span class="pill">Wspólne: ${com.length}</span><span class="pill good">Wybrane: ${sel.length} (w tym różnicujące: ${ndSel})</span></div>
+  $('#E-selsum').innerHTML=`<div class="row"><span class="pill acc">Różnicujące: ${diff.length}</span><span class="pill">Wspólne: ${com.length}</span><span class="pill good">Wybrane: ${sel.length} (w tym różnicujące: ${ndSel})</span></div>
     <p class="note mono">${sel.map(aid).join(', ')}</p>${diff.length<6?'<p class="callout">Mniej niż 6 par różnicujących: raportuj to jako właściwość testu dla tego profilu.</p>':''}`;
-  $('#A-pool').innerHTML=`<thead><tr><th>Para</th><th>Oferta A</th><th>Oferta B</th><th class="num">U(A)</th><th class="num">U(B)</th><th>ROC</th><th>Równe</th><th>Status</th></tr></thead><tbody>${
+  $('#E-pool').innerHTML=`<thead><tr><th>Para</th><th>Oferta A</th><th>Oferta B</th><th class="num">U(A)</th><th class="num">U(B)</th><th>ROC</th><th>Równe</th><th>Status</th></tr></thead><tbody>${
     pool.map(x=>`<tr class="${selSet.has(x.i)?'':'dim'}"><td class="mono">${x.id}</td><td class="mono">${aStr(x.p[0])}</td><td class="mono">${aStr(x.p[1])}</td><td class="num">${fmt(x.r.ua,3)}</td><td class="num">${fmt(x.r.ub,3)}</td><td>${predPill(x.r.pred)}</td><td>${predPill(x.e.pred)}</td>
-    <td>${selSet.has(x.i)?'<span class="pill good">wybrana</span> ':''}${x.r.filt?'<span class="pill warn">filtr: '+x.r.filt+'</span>':x.diff?'różnicująca':x.ok?'wspólna':'odrzucona'}</td></tr>`).join('')}</tbody>`;
-  const ps=$('#A-pair'), prev=ps.value;
+    <td>${selSet.has(x.i)?'<span class="pill good">wybrana</span> ':''}${!x.cand?'<span class="pill">test filtra</span> ':''}${x.r.filt?'<span class="pill warn">'+x.r.filt+'</span>':x.oor?'<span class="pill warn">out_of_range</span>':x.diff?'różnicująca':x.ok?'wspólna':(x.cand?'odrzucona':'')}</td></tr>`).join('')}</tbody>`;
+  const ps=$('#E-pair'), prev=ps.value;
   ps.innerHTML=sel.map(i=>`<option value="${i}">${aid(i)}</option>`).join('');
   ps.value=sel.includes(+prev)?prev:String(sel[0]??0);
   const pi=+ps.value, PP=A.pool[pi], sa=aU(PP[0],P.w), sb=aU(PP[1],P.w), mx=Math.max(...Object.values(P.w));
   const bar=(lab,p,cls)=>`<div class="bar"><span>${lab}</span><span class="track"><span class="fill ${cls}" style="width:${p.u/mx*100}%"></span></span><span class="num">${fmt(p.u,4)}</span></div>`;
   const pr=aPred(PP,P.w,budget), pe=aPred(PP,P.we,budget);
   const top=[...sorted].slice(0,2).map(c=>c.name.toLowerCase());
-  $('#A-explain').innerHTML=`<div class="scroll"><table><thead><tr><th>Kryterium</th><th class="num">v(A)</th><th class="num">v(B)</th><th class="num">w·v(A)</th><th class="num">w·v(B)</th></tr></thead><tbody>${
+  $('#E-explain').innerHTML=`<div class="scroll"><table><thead><tr><th>Kryterium</th><th class="num">v(A)</th><th class="num">v(B)</th><th class="num">w·v(A)</th><th class="num">w·v(B)</th></tr></thead><tbody>${
     sa.parts.map((p,k)=>`<tr><td>${p.c.name}</td><td class="num">${fmt(p.v,3)}${p.out?' <span class="pill warn">out_of_range</span>':''}</td><td class="num">${fmt(sb.parts[k].v,3)}${sb.parts[k].out?' <span class="pill warn">out_of_range</span>':''}</td><td class="num">${fmt(p.u,4)}</td><td class="num">${fmt(sb.parts[k].u,4)}</td></tr>`).join('')}
     <tr><td><b>U</b></td><td></td><td></td><td class="num"><b>${fmt(sa.U,3)}</b></td><td class="num"><b>${fmt(sb.U,3)}</b></td></tr></tbody></table></div>
     <div class="bars">${sa.parts.map(p=>bar('A · '+p.c.name,p,'')).join('')}${sb.parts.map(p=>bar('B · '+p.c.name,p,'b')).join('')}</div>
     <p class="note">Model z profilu: <b>${pr.pred}</b>; równe wagi: <b>${pe.pred}</b> (U = ${fmt(aU(PP[0],P.we).U,3)} i ${fmt(aU(PP[1],P.we).U,3)}). Według rankingu najwięcej ważą ${top.join(' i ')}. Słupki pokazują dopasowanie do profilu tej osoby, a nie jakość hotelu. Wyjaśnienie pokazujemy dopiero po zapisaniu wyboru.</p>`;
   /* walidacja */
   const rows=sel.map(i=>({i,id:aid(i),p:A.pool[i],pred:pool[i].r.pred,base:pool[i].e.pred,sens:pool[i].s.pred,ua:pool[i].r.ua,ub:pool[i].r.ub,ans:A.ans[i]}));
-  $('#A-val').innerHTML=`<thead><tr><th>Para</th><th>Oferta A</th><th>Oferta B</th><th class="num pc">U(A)</th><th class="num pc">U(B)</th><th class="pc">ROC</th><th class="pc">Równe</th><th>Wybór uczestnika</th><th class="pc">ROC</th><th class="pc">Równe</th><th class="pc">Suma rang</th></tr></thead><tbody>${
+  $('#E-val').innerHTML=`<thead><tr><th>Para</th><th>Oferta A</th><th>Oferta B</th><th class="num pc">U(A)</th><th class="num pc">U(B)</th><th class="pc">ROC</th><th class="pc">Równe</th><th>Wybór uczestnika</th><th class="pc">ROC</th><th class="pc">Równe</th><th class="pc">Suma rang</th></tr></thead><tbody>${
     rows.map(r=>`<tr><td class="mono">${r.id}</td><td class="mono">${aStr(r.p[0])}</td><td class="mono">${aStr(r.p[1])}</td><td class="num pc">${fmt(r.ua,3)}</td><td class="num pc">${fmt(r.ub,3)}</td><td class="pc">${predPill(r.pred)}</td><td class="pc">${predPill(r.base)}</td>
     <td><select data-i="${r.i}" aria-label="Wybór w parze ${r.id}">${opt(['A','B',''],r.ans)}</select></td><td class="pc">${mark(r.pred,r.ans)}</td><td class="pc">${mark(r.base,r.ans)}</td>
     <td class="pc">${predPill(r.sens)}${UNAMB(r.pred)&&r.sens!==r.pred?' <span class="pill warn">zmiana</span>':''}</td></tr>`).join('')}</tbody>`;
-  $$('#A-val select').forEach(s=>s.addEventListener('change',()=>{A.ans[+s.dataset.i]=s.value;updateA();}));
+  $$('#E-val select').forEach(s=>s.addEventListener('change',()=>{A.ans[+s.dataset.i]=s.value;updateA();}));
   const inv=rows.filter(r=>UNAMB(r.pred)&&r.sens!==r.pred).length;
-  $('#A-sum').innerHTML=summaryHTML(summarize(rows),'ROC z rankingu','równe wagi',` Analiza wrażliwości: wagi sumy rang zmieniają predykcję w ${inv} z ${rows.length} par.`);
-  const ver=$('#A-ver').textContent;
-  CSV.A=()=>toCSV(['proba','bodziec_A','bodziec_B','wersja_modelu','parametry','pred_indywidualna','pred_bazowa','pred_suma_rang','U_A','U_B','zapis','odpowiedz','dane'],
+  $('#E-sum').innerHTML=summaryHTML(summarize(rows),'ROC z rankingu','równe wagi',` Analiza wrażliwości: wagi sumy rang zmieniają predykcję w ${inv} z ${rows.length} par. Po serii aplikacja zbiera jedną ocenę dopasowania i jedną ocenę użyteczności (1–7).`);
+  const ver=$('#E-ver').textContent;
+  CSV.E=()=>toCSV(['proba','bodziec_A','bodziec_B','wersja_modelu','parametry','pred_indywidualna','pred_bazowa','pred_suma_rang','U_A','U_B','zapis','odpowiedz','dane'],
     rows.map(r=>[r.id,aStr(r.p[0]),aStr(r.p[1]),ver,`wagi=${A.crit.map(c=>c.id+':'+P.w[c.id].toFixed(6)).join(' ')}; budzet=${budget}`,r.pred,r.base,r.sens,r.ua?.toFixed(4),r.ub?.toFixed(4),stamp(),r.ans,'syntetyczne']));
 }
 
 /* ======================= B ======================= */
 const BL=['1 godzina','2 godziny','3 godziny','4 godziny','6 godzin','9 godzin','12 godzin','1 dzień','1,5 dnia','2 dni','3 dni','4 dni','1 tydzień','1,5 tygodnia','2 tygodnie','3 tygodnie','1 miesiąc','2 miesiące','3 miesiące','4 miesiące','6 miesięcy','8 miesięcy','1 rok','2 lata','3 lata','4 lata','5 lat','8 lat','12 lat','18 lat','25 lat'];
 const BT={1:[0.04167,0.05893],3:[0.1021,0.1444],5:[0.2041,0.3062],7:[0.433,0.7071],9:[1.225,1.732],11:[2.45,3.464],13:[5.292,8.573],15:[12.12,17.15],17:[25.28,43.05],19:[74.56,105.4],21:[149.1,210.9],23:[298.2,516.5],25:[894.7,1265.0],27:[1633,2310],29:[3579,5368],31:[7748,9131]};
-const B={ans:[], val:[[7,900],[7,980],[14,900],[14,960],[30,800],[30,930],[90,600],[90,800],[180,450],[180,650],[365,300],[365,450]],
-  vans:['później','teraz','później','teraz','później','teraz','później','teraz','teraz','teraz','później','teraz'], K0:0.01};
+const B={ans:[], val:[[7,900],[7,980],[30,800],[30,930],[90,600],[90,800],[180,450],[180,650],[365,300],[365,450]],
+  vans:['później','teraz','później','teraz','później','teraz','teraz','teraz','później','teraz'], K0:0.01};
 function bPath(){const nodes=[];let n=16,st=8;for(let t=0;t<B.ans.length;t++){nodes.push(n);if(t<4){n+=B.ans[t]===2?st:-st;st/=2;}}return {nodes,next:B.ans.length<5?n:null};}
 function bProfile(){
   if(B.ans.length<5)return null;const {nodes}=bPath();const last=nodes[4],a=B.ans[4];
@@ -480,39 +480,39 @@ function bProfile(){
 }
 function bPred(X,D,k){const V=1000/(1+k*D);return {V,pred:Math.abs(V-X)<0.01?'TIE':(V>X?'później':'teraz')};}
 function renderB(){
-  $('#B-reset').onclick=()=>{B.ans=[];updateB();};$('#B-demo').onclick=()=>{B.ans=[2,1,2,1,2];updateB();};
-  $('#B-low').onclick=()=>{B.ans=[1,1,1,1,1];updateB();};$('#B-high').onclick=()=>{B.ans=[2,2,2,2,2];updateB();};
-  ['#B-X','#B-D'].forEach(s=>$(s).addEventListener('input',updateB));
+  $('#A-reset').onclick=()=>{B.ans=[];updateB();};$('#A-demo').onclick=()=>{B.ans=[2,1,2,1,2];updateB();};
+  $('#A-low').onclick=()=>{B.ans=[1,1,1,1,1];updateB();};$('#A-high').onclick=()=>{B.ans=[2,2,2,2,2];updateB();};
+  ['#A-X','#A-D'].forEach(s=>$(s).addEventListener('input',updateB));
   B.ans=[2,1,2,1,2];updateB();
 }
 function updateB(){
   const {nodes,next}=bPath();
-  $('#B-q').innerHTML=next?`<p class="step">Pytanie ${B.ans.length+1} z 5 · węzeł ${next} (pole B_N${String(next).padStart(2,'0')})</p><p>Co wolisz: <b>500 zł teraz</b> czy <b>1000 zł za ${BL[next-1]}</b>?</p>
-    <div class="row"><button class="btn primary" id="B-now">500 zł teraz</button><button class="btn primary" id="B-later">1000 zł później</button></div>`:'<p>Pięć odpowiedzi zapisanych. Wynik odczytujemy z końcowego węzła i piątej odpowiedzi.</p>';
-  if(next){$('#B-now').onclick=()=>{B.ans.push(1);updateB();};$('#B-later').onclick=()=>{B.ans.push(2);updateB();};}
-  $('#B-hist').innerHTML=nodes.length?`<thead><tr><th>Próba</th><th>Pole</th><th>Odroczenie</th><th>Odpowiedź</th><th>Co dalej</th></tr></thead><tbody>${nodes.map((n,t)=>{
+  $('#A-q').innerHTML=next?`<p class="step">Pytanie ${B.ans.length+1} z 5 · węzeł ${next} (pole A_N${String(next).padStart(2,'0')})</p><p>Co wolisz: <b>500 zł teraz</b> czy <b>1000 zł za ${BL[next-1]}</b>?</p>
+    <div class="row"><button class="btn primary" id="A-now">500 zł teraz</button><button class="btn primary" id="A-later">1000 zł później</button></div>`:'<p>Pięć odpowiedzi zapisanych. Wynik odczytujemy z końcowego węzła i piątej odpowiedzi.</p>';
+  if(next){$('#A-now').onclick=()=>{B.ans.push(1);updateB();};$('#A-later').onclick=()=>{B.ans.push(2);updateB();};}
+  $('#A-hist').innerHTML=nodes.length?`<thead><tr><th>Próba</th><th>Pole</th><th>Odroczenie</th><th>Odpowiedź</th><th>Co dalej</th></tr></thead><tbody>${nodes.map((n,t)=>{
     const a=B.ans[t];const nx=t<4?`${n} ${a===2?'+':'−'} ${8>>t} = ${n+(a===2?1:-1)*(8>>t)}`:'odczyt ED50';
-    return `<tr><td class="num">${t+1}</td><td class="mono">B_N${String(n).padStart(2,'0')}</td><td>${BL[n-1]}</td><td>${a===2?'2 LATER':'1 NOW'}</td><td class="mono">${nx}</td></tr>`;}).join('')}</tbody>`:'';
+    return `<tr><td class="num">${t+1}</td><td class="mono">A_N${String(n).padStart(2,'0')}</td><td>${BL[n-1]}</td><td>${a===2?'2 LATER':'1 NOW'}</td><td class="mono">${nx}</td></tr>`;}).join('')}</tbody>`:'';
   const P=bProfile();
-  $('#B-ver').textContent=P?`B_v1 · węzeł ${P.last} ${B.ans[4]===2?'LATER':'NOW'} · ED50=${P.ed}`:'profil niekompletny';
-  $('#B-res').innerHTML=P?`<div class="stats"><div class="stat"><div class="big">${fmt(P.ed,P.ed<1?4:1)}</div><div class="sub">ED50, dni (tabela 1, węzeł ${P.last}, ${B.ans[4]===2?'LATER':'NOW'})</div></div>
+  $('#A-ver').textContent=P?`A_v1 · węzeł ${P.last} ${B.ans[4]===2?'LATER':'NOW'} · ED50=${P.ed}`:'profil niekompletny';
+  $('#A-res').innerHTML=P?`<div class="stats"><div class="stat"><div class="big">${fmt(P.ed,P.ed<1?4:1)}</div><div class="sub">ED50, dni (tabela 1, węzeł ${P.last}, ${B.ans[4]===2?'LATER':'NOW'})</div></div>
     <div class="stat"><div class="big">${P.k.toLocaleString('pl-PL',{maximumSignificantDigits:7})}</div><div class="sub">k, 1/dzień, dla A = 1000 zł</div></div></div>
     ${P.boundary?`<p class="callout">Wynik graniczny (${P.boundary}): ograniczenie rozdzielczości zadania, nie punktowa personalizacja. Aplikacja wstrzymuje predykcje.</p>`:''}
     <p class="note">ED50 to wynik tabeli, nie średnia pokazanych czasów ani ostatnie odroczenie. Model hiperboliczny jest dodatkowym założeniem.</p>`:'<p class="note">Bez pięciu odpowiedzi nie ma poprawnego profilu.</p>';
-  const usable=P&&!P.boundary, X=+$('#B-X').value, D=+$('#B-D').value;
+  const usable=P&&!P.boundary, X=+$('#A-X').value, D=+$('#A-D').value;
   if(usable){const r=bPred(X,D,P.k),r0=bPred(X,D,B.K0);
-    $('#B-calc').innerHTML=`<div class="formula">V = 1000 / (1 + ${P.k.toFixed(9)} · ${D}) = ${fmt(r.V,2)} zł   →  ${r.pred==='TIE'?'TIE':r.pred==='później'?'1000 zł później (RIGHT)':X+' zł teraz (LEFT)'}
+    $('#A-calc').innerHTML=`<div class="formula">V = 1000 / (1 + ${P.k.toFixed(9)} · ${D}) = ${fmt(r.V,2)} zł   →  ${r.pred==='TIE'?'TIE':r.pred==='później'?'1000 zł później (RIGHT)':X+' zł teraz (LEFT)'}
 k0 = 0,01:  V = ${fmt(r0.V,2)} zł  →  ${r0.pred}</div><p class="note">Według modelu z Twojego wcześniejszego badania ta oferta może być dla Ciebie bardziej atrakcyjna. To przewidywanie preferencji w zadaniu, nie wycena rynkowa.</p>`;
-  } else $('#B-calc').innerHTML='';
-  $('#B-chart').innerHTML=usable?bChart(P):'';
+  } else $('#A-calc').innerHTML='';
+  $('#A-chart').innerHTML=usable?bChart(P):'';
   const rows=B.val.map(([Dd,X],i)=>{const b=bPred(X,Dd,B.K0);if(!usable)return {i,Dd,X,pred:'NO_PREDICTION',base:b.pred,V0:b.V,ans:B.vans[i]};const r=bPred(X,Dd,P.k);return {i,Dd,X,V:r.V,V0:b.V,pred:r.pred,base:b.pred,ans:B.vans[i]};});
-  $('#B-val').innerHTML=`<thead><tr><th>#</th><th class="num">Dni</th><th class="num">Teraz</th><th class="num pc">V z profilu</th><th class="pc">Model</th><th class="num pc">V przy k0</th><th class="pc">k0</th><th>Wybór uczestnika</th><th class="pc">Model</th><th class="pc">k0</th></tr></thead><tbody>${
+  $('#A-val').innerHTML=`<thead><tr><th>#</th><th class="num">Dni</th><th class="num">Teraz</th><th class="num pc">V z profilu</th><th class="pc">Model</th><th class="num pc">V przy k0</th><th class="pc">k0</th><th>Wybór uczestnika</th><th class="pc">Model</th><th class="pc">k0</th></tr></thead><tbody>${
     rows.map(r=>`<tr><td class="num">${r.i+1}</td><td class="num">${r.Dd}</td><td class="num">${r.X} zł</td><td class="num pc">${r.V?fmt(r.V,2):'—'}</td><td class="pc">${predPill(r.pred)}</td><td class="num pc">${fmt(r.V0,2)}</td><td class="pc">${predPill(r.base)}</td>
     <td><select data-i="${r.i}" aria-label="Wybór ${r.i+1}">${opt(['teraz','później',''],r.ans)}</select></td><td class="pc">${mark(r.pred,r.ans)}</td><td class="pc">${mark(r.base,r.ans)}</td></tr>`).join('')}</tbody>`;
-  $$('#B-val select').forEach(s=>s.addEventListener('change',()=>{B.vans[+s.dataset.i]=s.value;updateB();}));
-  $('#B-sum').innerHTML=summaryHTML(summarize(rows),'hiperbola z k osoby','hiperbola z k0 = 0,01');
-  const ver=$('#B-ver').textContent;
-  CSV.B=()=>toCSV(['proba','delay_days','kwota_teraz','kwota_pozniej','wersja_modelu','k_per_day','k0','pred_indywidualna','pred_bazowa','V','V0','zapis','odpowiedz','dane'],
+  $$('#A-val select').forEach(s=>s.addEventListener('change',()=>{B.vans[+s.dataset.i]=s.value;updateB();}));
+  $('#A-sum').innerHTML=summaryHTML(summarize(rows),'hiperbola z k osoby','hiperbola z k0 = 0,01');
+  const ver=$('#A-ver').textContent;
+  CSV.A=()=>toCSV(['proba','delay_days','kwota_teraz','kwota_pozniej','wersja_modelu','k_per_day','k0','pred_indywidualna','pred_bazowa','V','V0','zapis','odpowiedz','dane'],
     rows.map(r=>[r.i+1,r.Dd,r.X,1000,ver,P?P.k.toFixed(9):'',B.K0,r.pred,r.base,r.V?.toFixed(2),r.V0.toFixed(2),stamp(),r.ans,'syntetyczne']));
 }
 function bChart(P){
@@ -616,29 +616,29 @@ const dmean=(dom,k)=>{const v=DK[dom].map(i=>DI[i][k]).filter(x=>x>=1&&x<=7);ret
 function dScore(b,r,c){return b-c*r;}
 function dPred(p,c){const d=dScore(p[5],p[6],c)-dScore(p[2],p[3],c);return Math.abs(d)<0.005?'TIE':(d>0?'prawa':'lewa');}
 function renderD(){
-  $('#D-dom').innerHTML=Object.keys(DK).map(d=>`<option${d===D.dom?' selected':''}>${d}</option>`).join('');
-  $('#D-dom').addEventListener('change',e=>{D.dom=e.target.value;updateD();});
+  $('#B-dom').innerHTML=Object.keys(DK).map(d=>`<option${d===D.dom?' selected':''}>${d}</option>`).join('');
+  $('#B-dom').addEventListener('change',e=>{D.dom=e.target.value;updateD();});
   const domOf=i=>Object.keys(DK).find(d=>DK[d].includes(i));
-  $('#D-items').innerHTML=`<thead><tr><th>Pozycja</th><th>Domena</th><th>W</th><th>R</th><th>B</th></tr></thead><tbody>${
+  $('#B-items').innerHTML=`<thead><tr><th>Pozycja</th><th>Domena</th><th>W</th><th>R</th><th>B</th></tr></thead><tbody>${
     Object.keys(DI).map(i=>`<tr><td class="num">${i}</td><td>${domOf(+i)}</td>${[0,1,2].map(k=>`<td><select data-i="${i}" data-k="${k}" aria-label="Pozycja ${i}, ${'WRB'[k]}">${opt([1,2,3,4,5,6,7,''],DI[i][k])}</select></td>`).join('')}</tr>`).join('')}</tbody>`;
-  $$('#D-items select').forEach(s=>s.addEventListener('change',()=>{DI[s.dataset.i][+s.dataset.k]=s.value===''?null:+s.value;updateD();}));
+  $$('#B-items select').forEach(s=>s.addEventListener('change',()=>{DI[s.dataset.i][+s.dataset.k]=s.value===''?null:+s.value;updateD();}));
   updateD();
 }
 function updateD(){
-  $('#D-prof').innerHTML=`<thead><tr><th>Domena</th><th class="num">Suma W</th><th class="num">W</th><th class="num">R</th><th class="num">B (rozszerzenie)</th><th>n W/R</th></tr></thead><tbody>${
+  $('#B-prof').innerHTML=`<thead><tr><th>Domena</th><th class="num">Suma W</th><th class="num">W</th><th class="num">R</th><th class="num">B (rozszerzenie)</th><th>n W/R</th></tr></thead><tbody>${
     Object.keys(DK).map(d=>{const w=dmean(d,0),r=dmean(d,1),b=dmean(d,2);return `<tr${d===D.dom?' style="font-weight:700"':''}><td>${d}</td><td class="num">${w.n===6?w.s:'—'}</td><td class="num">${fmt(w.m,4)}</td><td class="num">${fmt(r.m,4)}</td><td class="num">${fmt(b.m,4)}</td><td>${w.n}/${r.n}${w.n<6||r.n<6?' <span class="pill bad">niekompletna</span>':''}</td></tr>`;}).join('')}</tbody>`;
   const w=dmean(D.dom,0),r=dmean(D.dom,1);
   const complete=w.n===6&&r.n===6, isRec=D.dom==='rekreacyjna';
   const W=w.m,t=(W-1)/6,c=1-t,c2=1-Math.sqrt(t);
-  $('#D-ver').textContent=complete?`D_2006_v1 · ${D.dom} · W=${w.s}/6 · c=${c.toFixed(6)}`:'domena niekompletna';
-  $('#D-res').innerHTML=!complete?'<p class="pill bad">Domena niekompletna: brak pełnego parametru aplikacji, bez imputacji.</p>':
+  $('#B-ver').textContent=complete?`B_2006_v1 · ${D.dom} · W=${w.s}/6 · c=${c.toFixed(6)}`:'domena niekompletna';
+  $('#B-res').innerHTML=!complete?'<p class="pill bad">Domena niekompletna: brak pełnego parametru aplikacji, bez imputacji.</p>':
     `<div class="stats"><div class="stat"><div class="big">${fmt(t,4)}</div><div class="sub">t (zmienna prototypu, nie podskala DOSPERT)</div></div>
     <div class="stat"><div class="big">${fmt(c,4)}</div><div class="sub">c, kara za ryzyko</div></div><div class="stat"><div class="big">${fmt(c2,4)}</div><div class="sub">c' = 1 − √t (wrażliwość)</div></div>
     <div class="stat"><div class="big">0,8</div><div class="sub">c0 baseline = W 2,2, reguła ostrożna; dodatkowo opcjonalnie c0 = 0,5</div></div></div>
     ${!isRec?'<p class="callout">Pula scenariuszy dotyczy domeny rekreacyjnej. Dla tej domeny potrzebna jest własna pula uzgodniona z prowadzącymi; aplikacja jednej domeny odmawia predykcji.</p>':''}
     <p class="note">Score jest indeksem reguły, nie przewidywaną odpowiedzią W. Nie porównujemy go ze średnią W.</p>`;
   const P1=DP[0],P2=DP[1];
-  $('#D-check').innerHTML=complete?`<thead><tr><th>Kontrola</th><th>c</th><th>c'</th><th>c0</th></tr></thead><tbody>
+  $('#B-check').innerHTML=complete?`<thead><tr><th>Kontrola</th><th>c</th><th>c'</th><th>c0</th></tr></thead><tbody>
     ${[P1,P2].map(p=>`<tr><td>${p[0]} (${fmt(p[2],2)}/${fmt(p[3],2)} vs ${fmt(p[5],2)}/${fmt(p[6],2)})</td><td class="mono">${fmt(dScore(p[2],p[3],c),3)} vs ${fmt(dScore(p[5],p[6],c),3)} → ${dPred(p,c)}</td><td class="mono">${fmt(dScore(p[2],p[3],c2),3)} vs ${fmt(dScore(p[5],p[6],c2),3)} → ${dPred(p,c2)}</td><td class="mono">${fmt(dScore(p[2],p[3],.8),2)} vs ${fmt(dScore(p[5],p[6],.8),2)} → ${dPred(p,.8)}</td></tr>`).join('')}</tbody>`:'';
   const usable=complete&&isRec;
   const pool=DP.map(p=>{const cs=(p[5]-p[2])/(p[6]-p[3]);const near=usable&&(Math.abs(cs-c)<0.02||Math.abs(cs-D.C0)<0.02);
@@ -646,22 +646,22 @@ function updateD(){
   let sel=[];
   if(usable){const diff=pool.filter(x=>x.diff),agr=pool.filter(x=>!x.near&&!x.diff);const nd=Math.min(6,diff.length);sel=[...diff.slice(0,nd),...agr.slice(0,12-nd)];if(sel.length<12)sel=[...sel,...diff.slice(nd,nd+12-sel.length)];
     sel.sort((a,b)=>a.p[0].localeCompare(b.p[0]));
-    $('#D-selsum').innerHTML=`<div class="row"><span class="pill acc">Różnicujące: ${diff.length}</span><span class="pill">Zgodne: ${agr.length}</span><span class="pill warn">Odrzucone (prawie remis): ${pool.filter(x=>x.near).length}</span><span class="pill good">Wybrane: ${sel.length} (różnicujące: ${sel.filter(x=>x.diff).length})</span></div><p class="note mono">${sel.map(x=>x.p[0]).join(', ')}</p>`;
-  } else $('#D-selsum').innerHTML='<p class="note">Wybór par wstrzymany: profil niekompletny albo inna domena niż rekreacyjna.</p>';
+    $('#B-selsum').innerHTML=`<div class="row"><span class="pill acc">Różnicujące: ${diff.length}</span><span class="pill">Zgodne: ${agr.length}</span><span class="pill warn">Odrzucone (prawie remis): ${pool.filter(x=>x.near).length}</span><span class="pill good">Wybrane: ${sel.length} (różnicujące: ${sel.filter(x=>x.diff).length})</span></div><p class="note mono">${sel.map(x=>x.p[0]).join(', ')}</p>`;
+  } else $('#B-selsum').innerHTML='<p class="note">Wybór par wstrzymany: profil niekompletny albo inna domena niż rekreacyjna.</p>';
   const selSet=new Set(sel.map(x=>x.p[0]));
-  $('#D-pool').innerHTML=`<thead><tr><th>ID</th><th>Opcja lewa (Benefit; Risk)</th><th>Opcja prawa (Benefit; Risk)</th><th class="num">c*</th><th>c</th><th>c0</th><th>Status</th></tr></thead><tbody>${
+  $('#B-pool').innerHTML=`<thead><tr><th>ID</th><th>Opcja lewa (Benefit; Risk)</th><th>Opcja prawa (Benefit; Risk)</th><th class="num">c*</th><th>c</th><th>c0</th><th>Status</th></tr></thead><tbody>${
     pool.map(x=>`<tr class="${selSet.has(x.p[0])?'':'dim'}"><td class="mono">${x.p[0]}</td><td class="w">${x.p[1]} (${fmt(x.p[2],2)}; ${fmt(x.p[3],2)})</td><td class="w">${x.p[4]} (${fmt(x.p[5],2)}; ${fmt(x.p[6],2)})</td><td class="num">${fmt(x.cs,3)}</td><td>${predPill(x.pm)}</td><td>${predPill(x.pb)}</td><td>${selSet.has(x.p[0])?'<span class="pill good">wybrana</span> ':''}${x.near?'prawie remis':x.diff?'różnicująca':usable?'zgodna':'—'}</td></tr>`).join('')}</tbody>`;
   const rows=sel.map(x=>({id:x.p[0],p:x.p,pred:x.pm,base:x.pb,sens:x.ps,ans:D.vans[x.p[0]]}));
-  $('#D-val').innerHTML=`<thead><tr><th>ID</th><th>Opcja lewa</th><th>Opcja prawa</th><th class="pc">Score L / P (c)</th><th class="pc">c</th><th class="pc">c0 = 0,8</th><th>Wybór uczestnika</th><th class="pc">c</th><th class="pc">c0</th><th class="pc">c'</th></tr></thead><tbody>${
+  $('#B-val').innerHTML=`<thead><tr><th>ID</th><th>Opcja lewa</th><th>Opcja prawa</th><th class="pc">Score L / P (c)</th><th class="pc">c</th><th class="pc">c0 = 0,8</th><th>Wybór uczestnika</th><th class="pc">c</th><th class="pc">c0</th><th class="pc">c'</th></tr></thead><tbody>${
     rows.map(r=>`<tr><td class="mono">${r.id}</td><td class="w">${r.p[1]}<span class="pc mono"> (${fmt(r.p[2],2)}; ${fmt(r.p[3],2)})</span></td><td class="w">${r.p[4]}<span class="pc mono"> (${fmt(r.p[5],2)}; ${fmt(r.p[6],2)})</span></td>
     <td class="pc mono">${fmt(dScore(r.p[2],r.p[3],c),3)} / ${fmt(dScore(r.p[5],r.p[6],c),3)}</td><td class="pc">${predPill(r.pred)}</td><td class="pc">${predPill(r.base)}</td>
     <td><select data-id="${r.id}" aria-label="Wybór ${r.id}">${opt(['lewa','prawa',''],r.ans)}</select></td><td class="pc">${mark(r.pred,r.ans)}</td><td class="pc">${mark(r.base,r.ans)}</td>
     <td class="pc">${predPill(r.sens)}${UNAMB(r.pred)&&r.sens!==r.pred?' <span class="pill warn">odwrócenie</span>':''}</td></tr>`).join('')}</tbody>`;
-  $$('#D-val select').forEach(s=>s.addEventListener('change',()=>{D.vans[s.dataset.id]=s.value;updateD();}));
+  $$('#B-val select').forEach(s=>s.addEventListener('change',()=>{D.vans[s.dataset.id]=s.value;updateD();}));
   const inv=rows.filter(r=>UNAMB(r.pred)&&r.sens!==r.pred).length;
-  $('#D-sum').innerHTML=usable?summaryHTML(summarize(rows),'reguła z c z profilu','baseline c0 = 0,8',` Mapowanie c' zmienia predykcję w ${inv} z ${rows.length} par. Słaby wynik nie musi oznaczać błędu scoringu DOSPERT: problem może leżeć w mapowaniu W → c, opisie scenariuszy albo transferze.`):'';
-  const ver=$('#D-ver').textContent;
-  CSV.D=()=>toCSV(['proba','lewa','prawa','benefit_L','risk_L','benefit_P','risk_P','wersja_modelu','c','c0','pred_indywidualna','pred_bazowa','pred_c_alt','zapis','odpowiedz','dane'],
+  $('#B-sum').innerHTML=usable?summaryHTML(summarize(rows),'reguła z c z profilu','baseline c0 = 0,8',` Mapowanie c' zmienia predykcję w ${inv} z ${rows.length} par. Słaby wynik nie musi oznaczać błędu scoringu DOSPERT: problem może leżeć w mapowaniu W → c, opisie scenariuszy albo transferze.`):'';
+  const ver=$('#B-ver').textContent;
+  CSV.B=()=>toCSV(['proba','lewa','prawa','benefit_L','risk_L','benefit_P','risk_P','wersja_modelu','c','c0','pred_indywidualna','pred_bazowa','pred_c_alt','zapis','odpowiedz','dane'],
     rows.map(r=>[r.id,r.p[1],r.p[4],r.p[2],r.p[3],r.p[5],r.p[6],ver,c.toFixed(6),D.C0,r.pred,r.base,r.sens,stamp(),r.ans,'syntetyczne']));
 }
 
@@ -680,43 +680,43 @@ function eGain(N,p){const s=eStates(N,p);return `Masz ${N} punktów. <b>A:</b> n
 function eLoss(N,p){const s=eStates(N,p);return `Masz ${N} punktów. <b>A:</b> na pewno stracisz ${N-s.safe} z ${N} punktów. <b>B:</b> ${pc(p)}% szans na utratę 0 punktów i ${100-pc(p)}% szans na utratę ${N} punktów.`;}
 function eCheck(N,p){/* oba opisy z tego samego rekordu: stany końcowe identyczne */const s=eStates(N,p);return N-(N-s.safe)===s.safe&&N-0===s.good&&N-N===s.bad;}
 const AB=c=>c==='SAFE'?'A (SAFE)':c==='RISKY'?'B (RISKY)':'—';
-function renderE(){$('#E-transp').innerHTML=opt([1,2,3,4,5,6,7,''],ETR);$('#E-transp').addEventListener('change',e=>{ETR=e.target.value;updateE();});updateE();}
+function renderE(){$('#D-transp').innerHTML=opt([1,2,3,4,5,6,7,''],ETR);$('#D-transp').addEventListener('change',e=>{ETR=e.target.value;updateE();});updateE();}
 function updateE(){
   let valid=0,chg=0,gs=0,gr=0;
   ER.forEach(([id])=>{const [g,l]=EP[id];if(g&&l){valid++;if(g!==l){chg++;if(g==='SAFE')gs++;else gr++;}}});
-  $('#E-fi').innerHTML=`<div class="stat"><div class="big">${chg}/${valid}</div><div class="sub">ważnych par ze zmianą wyboru</div></div>
+  $('#D-fi').innerHTML=`<div class="stat"><div class="big">${chg}/${valid}</div><div class="sub">ważnych par ze zmianą wyboru</div></div>
     <div class="stat"><div class="big">${valid?fmt(chg/valid,2):'nieustalone'}</div><div class="sub">FI (statystyka opisowa tego zestawu)</div></div>
     <div class="stat"><div class="sub">Kierunki: zachowanie SAFE → utrata RISKY: ${gs}; zachowanie RISKY → utrata SAFE: ${gr}. FI nie jest cechą osoby ani odsetkiem błędów.</div></div>`;
-  $('#E-prof').innerHTML=`<thead><tr><th>Para</th><th>Rama zachowania (E_${'Pxx'}_G)</th><th>Wybór</th><th>Rama utraty (E_Pxx_L)</th><th>Wybór</th><th>Zmiana</th></tr></thead><tbody>${
+  $('#D-prof').innerHTML=`<thead><tr><th>Para</th><th>Rama zachowania (D_Pxx_G)</th><th>Wybór</th><th>Rama utraty (D_Pxx_L)</th><th>Wybór</th><th>Zmiana</th></tr></thead><tbody>${
     ER.map(([id,N,p])=>`<tr><td class="mono">${id}${eCheck(N,p)?'':' <span class="pill bad">błąd równoważności</span>'}</td><td class="w"><div class="frame">${eGain(N,p)}</div></td><td><select data-id="${id}" data-k="0" aria-label="${id} zachowanie">${opt(['SAFE','RISKY',''],EP[id][0],['A','B','brak'])}</select></td>
     <td class="w"><div class="frame">${eLoss(N,p)}</div></td><td><select data-id="${id}" data-k="1" aria-label="${id} utrata">${opt(['SAFE','RISKY',''],EP[id][1],['A','B','brak'])}</select></td>
     <td>${EP[id][0]&&EP[id][1]?(EP[id][0]!==EP[id][1]?'<span class="pill warn">1</span>':'0'):'<span class="pill">nieważna</span>'}</td></tr>`).join('')}</tbody>`;
-  $$('#E-prof select').forEach(s=>s.addEventListener('change',()=>{EP[s.dataset.id][+s.dataset.k]=s.value;updateE();}));
+  $$('#D-prof select').forEach(s=>s.addEventListener('change',()=>{EP[s.dataset.id][+s.dataset.k]=s.value;updateE();}));
   const rec=id=>EN.find(r=>r[0]===id);
-  $('#E-init').innerHTML=`<thead><tr><th>#</th><th>case_id</th><th>origin_frame</th><th>Opis (tryb standardowy)</th><th>initial</th></tr></thead><tbody>${
+  $('#D-init').innerHTML=`<thead><tr><th>#</th><th>case_id</th><th>origin_frame</th><th>Opis (tryb standardowy)</th><th>initial</th></tr></thead><tbody>${
     EORDER.map(([id,f],k)=>{const [,N,p]=rec(id);return `<tr><td class="num">${k+1}</td><td class="mono">${id}_${f}</td><td>${f==='G'?'GAIN':'LOSS'}</td><td class="w"><div class="frame">${f==='G'?eGain(N,p):eLoss(N,p)}</div></td>
     <td><select data-id="${id}" data-f="${f}" aria-label="initial ${id} ${f}">${opt(['SAFE','RISKY',''],EI[id][f],['A','B','brak'])}</select></td></tr>`;}).join('')}</tbody>`;
-  $$('#E-init select').forEach(s=>s.addEventListener('change',()=>{EI[s.dataset.id][s.dataset.f]=s.value;updateE();}));
-  $('#E-final').innerHTML=`<thead><tr><th>case_id</th><th>Oba opisy i wyjaśnienie (tryb zbalansowany)</th><th>initial</th><th>final</th><th>Rewizja</th></tr></thead><tbody>${
+  $$('#D-init select').forEach(s=>s.addEventListener('change',()=>{EI[s.dataset.id][s.dataset.f]=s.value;updateE();}));
+  $('#D-final').innerHTML=`<thead><tr><th>case_id</th><th>Oba opisy i wyjaśnienie (tryb zbalansowany)</th><th>initial</th><th>final</th><th>Rewizja</th></tr></thead><tbody>${
     EORDER.map(([id,f])=>{const [,N,p]=rec(id),k=Math.round(N*p),i=EI[id][f],fi=EF[id][f];return `<tr><td class="mono">${id}_${f}</td>
     <td class="w"><div class="duo"><div class="frame"><div class="t">opis przez zachowanie</div>${eGain(N,p)}</div><div class="frame"><div class="t">opis przez utratę</div>${eLoss(N,p)}</div></div>
     <p class="note">Początkowo masz ${N} punktów. Zachować ${k} to stracić ${N-k}; zachować ${N} to stracić 0. W obu opisach loteria ma te same szanse i te same końcowe punkty.</p></td>
     <td>${AB(i)}</td><td><select data-id="${id}" data-f="${f}" aria-label="final ${id} ${f}">${opt(['SAFE','RISKY',''],fi,['A','B','brak'])}</select></td><td>${i&&fi?(i!==fi?'<span class="pill warn">'+(i==='SAFE'?'A→B':'B→A')+'</span>':'nie'):'—'}</td></tr>`;}).join('')}</tbody>`;
-  $$('#E-final select').forEach(s=>s.addEventListener('change',()=>{EF[s.dataset.id][s.dataset.f]=s.value;updateE();}));
-  $('#E-comp').innerHTML=`<thead><tr><th>Problem</th><th>Pytanie</th><th>Odpowiedź</th><th>Poprawna</th></tr></thead><tbody>${
-    ECOMP.map((q,k)=>`<tr><td class="mono">${q.id}</td><td class="w">${q.q}</td><td><input type="number" id="E-cq-${k}" data-k="${k}" value="${q.ans}" aria-label="Odpowiedź ${q.id}"></td><td>${Number(q.ans)===q.correct?'<span class="ok">tak</span>':'<span class="no">nie</span>'}</td></tr>`).join('')}</tbody>`;
-  $$('#E-comp input').forEach(s=>s.addEventListener('change',()=>{ECOMP[+s.dataset.k].ans=s.value===''?'':+s.value;updateE();}));
+  $$('#D-final select').forEach(s=>s.addEventListener('change',()=>{EF[s.dataset.id][s.dataset.f]=s.value;updateE();}));
+  $('#D-comp').innerHTML=`<thead><tr><th>Problem</th><th>Pytanie</th><th>Odpowiedź</th><th>Poprawna</th></tr></thead><tbody>${
+    ECOMP.map((q,k)=>`<tr><td class="mono">${q.id}</td><td class="w">${q.q}</td><td><input type="number" id="D-cq-${k}" data-k="${k}" value="${q.ans}" aria-label="Odpowiedź ${q.id}"></td><td>${Number(q.ans)===q.correct?'<span class="ok">tak</span>':'<span class="no">nie</span>'}</td></tr>`).join('')}</tbody>`;
+  $$('#D-comp input').forEach(s=>s.addEventListener('change',()=>{ECOMP[+s.dataset.k].ans=s.value===''?'':+s.value;updateE();}));
   let nb=0,db=0,na=0,da=0,rv=0,nv=0,sr=0,rs=0;
   EN.forEach(([id])=>{const i=EI[id],f=EF[id];if(i.G&&i.L){nb++;if(i.G!==i.L)db++;}if(f.G&&f.L){na++;if(f.G!==f.L)da++;}
     ['G','L'].forEach(x=>{if(i[x]&&f[x]){nv++;if(i[x]!==f[x]){rv++;if(i[x]==='SAFE')sr++;else rs++;}}});});
   const cc=ECOMP.filter(q=>Number(q.ans)===q.correct&&q.ans!=='').length;
-  $('#E-sum').innerHTML=`<div class="stat"><div class="big">${rv}/${nv}</div><div class="sub">udział rewizji initial → final (${nv?fmt(rv/nv,3):'—'}); A→B: ${sr}, B→A: ${rs}</div></div>
+  $('#D-sum').innerHTML=`<div class="stat"><div class="big">${rv}/${nv}</div><div class="sub">udział rewizji initial → final (${nv?fmt(rv/nv,3):'—'}); A→B: ${sr}, B→A: ${rs}</div></div>
     <div class="stat"><div class="big">${cc}/${ECOMP.length}</div><div class="sub">poprawne odpowiedzi o rozumienie</div></div>
     <div class="stat"><div class="big">${ETR||'—'}</div><div class="sub">transparentność całej serii (1–7); samoocena nie zastępuje testu rozumienia</div></div>
     <div class="stat"><div class="big">${db}/${nb}</div><div class="sub">rozbieżne pary przed (porównanie z profilowaniem)</div></div>
     <div class="stat"><div class="big">${da}/${na}</div><div class="sub">rozbieżne pary po: kontrola; bliska zeru z konstrukcji, bo obie wersje pokazują ten sam ekran</div></div>
     <p class="note" style="flex-basis:100%">Demonstracja przed i po w jednej osobie: etap, ponowny kontakt z problemem i pamięć współwystępują. Zmiana po trybie zbalansowanym nie oznacza lepszej decyzji, a brak zmiany nie dowodzi odporności.</p>`;
-  CSV.E=()=>{const rows=[];
+  CSV.D=()=>{const rows=[];
     ER.forEach(([id,N,p])=>['G','L'].forEach((f,k)=>rows.push(['profile',id,`${id}_${f}`,f==='G'?'GAIN':'LOSS','standard',N,p,Math.round(N*p),EP[id][k],'','','syntetyczne'])));
     EORDER.forEach(([id,f])=>{const [,N,p]=rec(id);rows.push(['validation',id,`${id}_${f}`,f==='G'?'GAIN':'LOSS','standard→balanced',N,p,Math.round(N*p),EI[id][f],EF[id][f],ETR,'syntetyczne']);});
     return toCSV(['faza','pair_id','case_id','origin_frame','tryb','endowment','success_p','safe_kept','initial','final','series_transparency','dane'],rows);};
