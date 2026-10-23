@@ -122,6 +122,7 @@ ol.plan>li::marker{font-family:var(--f-display);font-weight:700;color:var(--acce
   <div>
     <h1>Pracownia ścieżek A–E</h1>
     <p class="lede">Przykładowe rozwiązania zgodne z przewodnikami ścieżek A–E (A dyskontowanie, B DOSPERT, C ekwiwalent pewności, D framing, E preferencje wielokryterialne) projektu „Projektowanie i badanie informatycznych systemów wspomagania decyzji”. W każdej zakładce: profil jednej osoby, jawna reguła i test na nowych przypadkach.</p>
+    <p class="row" style="margin-top:8px"><a class="btn" href="https://gemini.google.com/gem/1B6czvZbCeBBuqqjSMid08BPCGsWN1qDe?usp=sharing" target="_blank" rel="noopener">Konsultant DSS (Gem w Gemini)</a><span class="note">pomoc AI do projektu: wyjaśnia pojęcia i błędy, krytykuje plan, nie uzupełnia luk notatnika</span></p>
   </div>
   <span class="synth"><b>●</b> Odpowiedzi uczestnika są wymyślonymi danymi z przewodników albo danymi syntetycznymi</span>
 </header>
@@ -169,13 +170,23 @@ ol.plan>li::marker{font-family:var(--f-display);font-weight:700;color:var(--acce
   </div>
 
   <div class="panel">
+    <div class="hd"><span class="step">Ocena dziennika i prototypu</span><span class="note">ocenia prowadzący warsztatów</span></div>
+    <h3>Dziennik procesu: 24 pkt, minimum 12</h3>
+    <div class="scroll"><table><thead><tr><th>Kryterium</th><th>Pkt</th><th>Co sprawdzamy</th></tr></thead><tbody><tr><td class="w">Problem, użytkownik i plan</td><td class="mono">3</td><td class="w">opis projektu v0, role, kontakt z uczestnikiem i umówione dwie sesje</td></tr><tr><td class="w">Projekt badania i pilotaż</td><td class="mono">4</td><td class="w">kolejne wersje protokołu; poprawki po pilotażu z uzasadnieniem; słownik pól i kodów</td></tr><tr><td class="w">Realizacja badania i dane</td><td class="mono">4</td><td class="w">przebieg i odstępstwa; dane z pilotażu oddzielone od danych uczestnika; karta przekazania (robocza i v1)</td></tr><tr><td class="w">Od wyniku do reguły (ślad)</td><td class="mono">6</td><td class="w">tabela śladu; decyzje projektowe (mapowanie, k0/c0, skala interpolacji, budżet) zapisane przed testem; baseline i analiza wrażliwości</td></tr><tr><td class="w">Wersje i zamrożenie</td><td class="mono">4</td><td class="w">każda zmiana ma wersję i powód; skrót SHA-256 wpisany przed sesją; próbne sesje opisane; brak zmian po zobaczeniu odpowiedzi</td></tr><tr><td class="w">Podział pracy, AI i refleksja</td><td class="mono">3</td><td class="w">kto co robił; dziennik AI (co przyjęto i odrzucono, jak sprawdzono); wnioski zespołu</td></tr></tbody></table></div>
+    <h3>Prototyp: 16 pkt, minimum 8</h3>
+    <p class="note">Warunek wejścia: notatnik uruchamia się od początku do końca w trybie <code>wlasne</code> bez błędów; inaczej prototyp nie jest dalej oceniany.</p>
+    <div class="scroll"><table><thead><tr><th>Kryterium</th><th>Pkt</th><th>Co sprawdzamy</th></tr></thead><tbody><tr><td class="w">Poprawność obliczeń</td><td class="mono">5</td><td class="w">luki uzupełnione, testy przykładu P01 przechodzą, przypadki graniczne obsłużone (wynik graniczny, brak, TIE, lista niespójna, budżet)</td></tr><tr><td class="w">Dane uczestnika w regule</td><td class="mono">3</td><td class="w">profil policzony z własnego eksportu; poprawne mapowanie pól; status profilu i flagi; brak ręcznych poprawek liczb</td></tr><tr><td class="w">Zamrożenie i kontrakt</td><td class="mono">3</td><td class="w">cases.csv i skrót SHA-256 sprzed sesji; kontrola kontraktu bez błędów; predykcje obu modeli; reguła doboru przypadków zgodna z przewodnikiem</td></tr><tr><td class="w">Sesja i log</td><td class="mono">3</td><td class="w">sesja z uczestnikiem przeprowadzona w aplikacji; kompletny validation.csv i session_*.json; log zgodny z zamrożeniem; kod uczestnika, dane na Dysku zespołu</td></tr><tr><td class="w">Analiza i wyjaśnienia</td><td class="mono">2</td><td class="w">analiza odtwarzalna z notatnika (pokrycie, trafność, 2×2, wrażliwość; w D: rewizje, rozumienie, transparentność); wyjaśnienia zrozumiałe dla uczestnika</td></tr></tbody></table></div>
+    <p class="note">Oceniamy poprawność i odtwarzalność, nie wygląd: interfejs jest gotowy. Słaby wynik walidacji nie obniża punktów za prototyp; jego interpretację ocenia raport (40 pkt). Prezentacja: 20 pkt, minimum 11.</p>
+  </div>
+
+  <div class="panel">
     <div class="hd"><span class="step">Zasady wspólne</span></div>
     <ul class="plan">
       <li>Jedna dorosła osoba, dobrowolnie, w obu etapach. W danych używacie kodu (np. P01), dane kontaktowe trzymacie osobno. Informacja przed zgodą mówi, że dane leżą na Dysku Google zespołu.</li>
       <li>Wypełnienia próbne (pilotaż, testy aplikacji) oznaczacie i trzymacie osobno od danych uczestnika.</li>
       <li>Predykcje, bodźce i reguły zapisujecie <b>przed</b> sesją walidacyjną i nie zmieniacie ich po zobaczeniu odpowiedzi. Zmiana oznacza nową wersję i nowy zestaw prób.</li>
       <li>TIE i brak predykcji nie są ani trafieniem, ani pomyłką. Słaby wynik modelu, uczciwie opisany, też jest wynikiem projektu.</li>
-      <li>AI może pomagać w nauce i kodzie, ale każdą liczbę i fragment kodu sprawdzacie. W dzienniku zapisujecie cel pomocy i sposób kontroli.</li>
+      <li>AI może pomagać w nauce i kodzie, ale każdą liczbę i fragment kodu sprawdzacie. Dla przedmiotu działa <a href="https://gemini.google.com/gem/1B6czvZbCeBBuqqjSMid08BPCGsWN1qDe?usp=sharing" target="_blank" rel="noopener">Konsultant DSS (Gem w Gemini)</a>: wyjaśnia i krytykuje, ale nie uzupełnia luk notatnika. W dzienniku zapisujecie cel pomocy, decyzję zespołu i sposób kontroli.</li>
       <li>Rozwiązań notatników nie ma w repozytorium. Szkielet uzupełniacie sami, a testy pod każdym krokiem pokazują, czy wynik się zgadza.</li>
     </ul>
   </div>
