@@ -68,6 +68,7 @@ select,input[type=number],input[type=text]{background:var(--surface);border:1px 
 input[type=number]{width:6.5em;font-family:var(--f-mono)}
 .btn{border:1px solid var(--accent);background:var(--accent-soft);border-radius:5px;padding:6px 12px;cursor:pointer}
 .btn.primary{background:var(--accent);color:var(--bg)}
+a.btn{text-decoration:none;display:inline-block}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .ok{color:var(--good);font-weight:700} .no{color:var(--bad);font-weight:700}
 .pill{display:inline-block;border-radius:999px;padding:1px 8px;font-size:.74rem;border:1px solid var(--line);white-space:nowrap}
@@ -127,7 +128,8 @@ footer{margin-top:28px;font-size:.8rem;color:var(--muted);max-width:90ch}
 <!-- ======================= A ======================= -->
 <section class="path" id="tab-A" role="tabpanel" hidden>
   <div><h2>A · Dyskontowanie odroczonych nagród (5-trial)</h2>
-  <p class="lede">Pięć wyborów 500 zł teraz albo 1000 zł później według drzewa Koffarnusa i Bickela (2014). ED50 odczytujemy z tabeli dla końcowego węzła i piątej odpowiedzi; k = 1/ED50, V = A/(1 + kD).</p></div>
+  <p class="lede">Pięć wyborów 500 zł teraz albo 1000 zł później według drzewa Koffarnusa i Bickela (2014). ED50 odczytujemy z tabeli dla końcowego węzła i piątej odpowiedzi; k = 1/ED50, V = A/(1 + kD).</p>
+  <p class="row" style="margin-top:8px"><a class="btn primary" href="https://colab.research.google.com/github/p4welrog/decyzje/blob/main/notebooks/A_Dyskontowanie_z_aplikacja_szkielet.ipynb" target="_blank" rel="noopener">Otwórz notatnik ścieżki A w Colabie</a><span class="note">notatnik z lukami do uzupełnienia i gotową aplikacją do sesji</span></p></div>
   <div class="facts">
     <div class="fact"><div class="k">Wynik procedury</div><div class="v">Jedna z 32 wartości ED50</div></div>
     <div class="fact"><div class="k">Model bazowy</div><div class="v">Ta sama hiperbola, k0 = 0,01 / dzień</div></div>
@@ -162,7 +164,8 @@ footer{margin-top:28px;font-size:.8rem;color:var(--muted);max-width:90ch}
 <!-- ======================= B ======================= -->
 <section class="path" id="tab-B" role="tabpanel" hidden>
   <div><h2>B · Domenowy profil ryzyka DOSPERT</h2>
-  <p class="lede">DOSPERT 2006, 30 pozycji, skala 1–7: gotowość W, postrzegane ryzyko R i opcjonalnie korzyści B. Średnie domen liczymy według klucza. Mapowanie W → c jest autorską regułą aplikacji, a nie wynikiem DOSPERT.</p></div>
+  <p class="lede">DOSPERT 2006, 30 pozycji, skala 1–7: gotowość W, postrzegane ryzyko R i opcjonalnie korzyści B. Średnie domen liczymy według klucza. Mapowanie W → c jest autorską regułą aplikacji, a nie wynikiem DOSPERT.</p>
+  <p class="row" style="margin-top:8px"><a class="btn primary" href="https://colab.research.google.com/github/p4welrog/decyzje/blob/main/notebooks/B_DOSPERT_z_aplikacja_szkielet.ipynb" target="_blank" rel="noopener">Otwórz notatnik ścieżki B w Colabie</a><span class="note">notatnik z lukami do uzupełnienia i gotową aplikacją do sesji</span></p></div>
   <div class="facts">
     <div class="fact"><div class="k">Reguła</div><div class="v">Score = Benefit − c · Risk, c = 1 − (W − 1)/6</div></div>
     <div class="fact"><div class="k">Model bazowy</div><div class="v">c0 = 0,8 (odpowiada W = 2,2)</div></div>
@@ -202,7 +205,8 @@ Score(x) = Benefit(x) − c · Risk(x),  Benefit, Risk ∈ [0, 1]</div>
 <!-- ======================= C ======================= -->
 <section class="path" id="tab-C" role="tabpanel" hidden>
   <div><h2>C · Ekwiwalent pewności loterii 50/50</h2>
-  <p class="lede">Trzy listy po 9 wyborów (loteria 50% X / 50% 0 zł kontra kwota pewna 10–90% X) dla X = 100, 1000 i 10 000 zł. Przełączenie daje przedział CE; środek jest punktem roboczym, q = CE/EV.</p></div>
+  <p class="lede">Trzy listy po 9 wyborów (loteria 50% X / 50% 0 zł kontra kwota pewna 10–90% X) dla X = 100, 1000 i 10 000 zł. Przełączenie daje przedział CE; środek jest punktem roboczym, q = CE/EV.</p>
+  <p class="row" style="margin-top:8px"><a class="btn primary" href="https://colab.research.google.com/github/p4welrog/decyzje/blob/main/notebooks/C_Ekwiwalent_pewnosci_z_aplikacja_szkielet.ipynb" target="_blank" rel="noopener">Otwórz notatnik ścieżki C w Colabie</a><span class="note">notatnik z lukami do uzupełnienia i gotową aplikacją do sesji</span></p></div>
   <div class="facts">
     <div class="fact"><div class="k">Reguła</div><div class="v">CE(X) = EV(X) · q(X), interpolacja bez ekstrapolacji</div></div>
     <div class="fact"><div class="k">Model bazowy</div><div class="v">Wybór większej EV</div></div>
@@ -238,7 +242,8 @@ CE_est(X) = EV(X) · q(X),  granice z q_low i q_high tą samą interpolacją</di
 <!-- ======================= D ======================= -->
 <section class="path" id="tab-D" role="tabpanel" hidden>
   <div><h2>D · Framing i stabilność wyboru</h2>
-  <p class="lede">Ten sam problem opisany przez zachowanie albo utratę punktów. Wybór A (pewny, kod SAFE) albo B (niepewny, kod RISKY). Oba opisy generujemy z jednego rekordu liczbowego. Nie liczymy accuracy.</p></div>
+  <p class="lede">Ten sam problem opisany przez zachowanie albo utratę punktów. Wybór A (pewny, kod SAFE) albo B (niepewny, kod RISKY). Oba opisy generujemy z jednego rekordu liczbowego. Nie liczymy accuracy.</p>
+  <p class="row" style="margin-top:8px"><a class="btn primary" href="https://colab.research.google.com/github/p4welrog/decyzje/blob/main/notebooks/D_Framing_z_aplikacja_szkielet.ipynb" target="_blank" rel="noopener">Otwórz notatnik ścieżki D w Colabie</a><span class="note">notatnik z lukami do uzupełnienia i gotową aplikacją do sesji</span></p></div>
   <div class="facts">
     <div class="fact"><div class="k">Wynik profilowania</div><div class="v">FI = pary ze zmianą / ważne pary</div></div>
     <div class="fact"><div class="k">Aplikacja</div><div class="v">Tryb standardowy i zbalansowany</div></div>
@@ -269,7 +274,8 @@ CE_est(X) = EV(X) · q(X),  granice z q_low i q_high tą samą interpolacją</di
 <!-- ======================= E ======================= -->
 <section class="path" id="tab-E" role="tabpanel">
   <div><h2>E · Preferencje wielokryterialne (hotel)</h2>
-  <p class="lede">Ranking pięciu swingów w stałych zakresach → wagi ROC → suma ważona dla nowych ofert. Budżet filtruje oferty przed rankingiem. Model bazowy: równe wagi 0,2.</p></div>
+  <p class="lede">Ranking pięciu swingów w stałych zakresach → wagi ROC → suma ważona dla nowych ofert. Budżet filtruje oferty przed rankingiem. Model bazowy: równe wagi 0,2.</p>
+  <p class="row" style="margin-top:8px"><a class="btn primary" href="https://colab.research.google.com/github/p4welrog/decyzje/blob/main/notebooks/E_Hotel_z_aplikacja_szkielet.ipynb" target="_blank" rel="noopener">Otwórz notatnik ścieżki E w Colabie</a><span class="note">notatnik z lukami do uzupełnienia i gotową aplikacją do sesji</span></p></div>
   <div class="facts">
     <div class="fact"><div class="k">Wynik procedury</div><div class="v">Wagi ROC i status profilu</div></div>
     <div class="fact"><div class="k">Remis modelowy</div><div class="v">|U(A) − U(B)| &lt; 0,005 → TIE</div></div>
