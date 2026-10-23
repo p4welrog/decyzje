@@ -103,6 +103,15 @@ textarea{width:100%;min-height:120px;font-family:var(--f-mono);font-size:.75rem;
 details summary{cursor:pointer;color:var(--accent)}
 svg text{fill:var(--muted);font-family:var(--f-mono);font-size:10px}
 footer{margin-top:28px;font-size:.8rem;color:var(--muted);max-width:90ch}
+
+.fact .v,.plan li{overflow-wrap:anywhere;min-width:0}
+ol.plan,ul.plan{margin:0;padding-left:1.3em;display:grid;gap:10px;max-width:90ch}
+ol.plan>li::marker{font-family:var(--f-display);font-weight:700;color:var(--accent)}
+.plan .when{font-family:var(--f-mono);font-size:.75rem;color:var(--mark);margin-left:6px}
+.plan .where{font-size:.82rem;color:var(--muted)}
+.plan ul{margin:4px 0 0;padding-left:1.1em}
+#P-pick button{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:6px 12px;cursor:pointer}
+#P-pick button[aria-checked="true"]{background:var(--accent-soft);border-color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -118,12 +127,59 @@ footer{margin-top:28px;font-size:.8rem;color:var(--muted);max-width:90ch}
 </header>
 
 <nav class="tabs" role="tablist" aria-label="Ścieżki">
+  <button role="tab" data-tab="P" aria-selected="false"><span class="l">▸</span>Plan pracy</button>
   <button role="tab" data-tab="A" aria-selected="true"><span class="l">A</span>Dyskontowanie</button>
   <button role="tab" data-tab="B" aria-selected="false"><span class="l">B</span>DOSPERT</button>
   <button role="tab" data-tab="C" aria-selected="false"><span class="l">C</span>Ekwiwalent pewności</button>
   <button role="tab" data-tab="D" aria-selected="false"><span class="l">D</span>Framing</button>
   <button role="tab" data-tab="E" aria-selected="false"><span class="l">E</span>Preferencje wielokryterialne</button>
 </nav>
+
+<!-- ======================= P (plan pracy) ======================= -->
+<section class="path" id="tab-P" role="tabpanel" hidden>
+  <div><h2>Plan pracy zespołu</h2>
+  <p class="lede">Co po kolei robi zespół: od lektury przewodnika, przez badanie w Qualtricsie i notatnik, po sesję w aplikacji i raport. Wybierz swoją ścieżkę, a szczegóły kroków dopasują się do niej.</p></div>
+  <div class="row" role="radiogroup" aria-label="Ścieżka zespołu" id="P-pick"></div>
+  <div class="facts" id="P-facts"></div>
+
+  <div class="panel">
+    <div class="hd"><span class="step">Terminy</span><span class="note">z konwersatorium 1</span></div>
+    <div class="scroll"><table>
+      <thead><tr><th>Termin</th><th>Co ma być gotowe</th><th>Kroki planu</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">24.10</td><td class="w">Opis projektu, role, protokół v0 i specyfikacja v0; notatnik otwarty w trybie przykładu</td><td>1–2</td></tr>
+        <tr><td class="mono">14.11, 23:59</td><td class="w">Procedura po pilotażu, zapis poprawek i specyfikacja v1</td><td>3–4</td></tr>
+        <tr><td class="mono">05.12, 23:59</td><td class="w">Dane, profil, robocza karta przekazania i 3 slajdy postępu</td><td>5–6</td></tr>
+        <tr><td class="mono">12.12</td><td class="w">Sprawdzony profil, karta v1 i plan walidacji (zajęcia)</td><td>6</td></tr>
+        <tr><td class="mono">09.01, 23:59</td><td class="w">Działający rdzeń, wersja modelu i zamrożone nowe próby</td><td>7</td></tr>
+        <tr><td class="mono">23.01, 23:59</td><td class="w">Walidacja zakończona, tabela wyników, roboczy raport i slajdy</td><td>8–9</td></tr>
+        <tr><td class="mono">30.01</td><td class="w">Wersja demo i prezentacja (przed 15:30)</td><td>10</td></tr>
+        <tr><td class="mono">06.02, 23:59</td><td class="w">Finalna paczka: dziennik, prototyp, raport, dane i log</td><td>10</td></tr>
+      </tbody></table></div>
+    <p class="note">Pierwszy pomiar musi być gotowy przed drugimi zajęciami (12.12), a sesja walidacyjna przed trzecimi (30.01). Umówcie obie sesje z tą samą osobą odpowiednio wcześnie.</p>
+  </div>
+
+  <div class="panel"><div class="hd"><span class="step">Kroki</span><span class="note">każdy krok: co zrobić, gdzie to jest, co zapisać w dzienniku</span></div>
+    <ol class="plan" id="P-steps"></ol>
+  </div>
+
+  <div class="panel">
+    <div class="hd"><span class="step">Najczęstsze pułapki tej ścieżki</span></div>
+    <ul class="plan" id="P-traps"></ul>
+  </div>
+
+  <div class="panel">
+    <div class="hd"><span class="step">Zasady wspólne</span></div>
+    <ul class="plan">
+      <li>Jedna dorosła osoba, dobrowolnie, w obu etapach. W danych używacie kodu (np. P01), dane kontaktowe trzymacie osobno. Informacja przed zgodą mówi, że dane leżą na Dysku Google zespołu.</li>
+      <li>Wypełnienia próbne (pilotaż, testy aplikacji) oznaczacie i trzymacie osobno od danych uczestnika.</li>
+      <li>Predykcje, bodźce i reguły zapisujecie <b>przed</b> sesją walidacyjną i nie zmieniacie ich po zobaczeniu odpowiedzi. Zmiana oznacza nową wersję i nowy zestaw prób.</li>
+      <li>TIE i brak predykcji nie są ani trafieniem, ani pomyłką. Słaby wynik modelu, uczciwie opisany, też jest wynikiem projektu.</li>
+      <li>AI może pomagać w nauce i kodzie, ale każdą liczbę i fragment kodu sprawdzacie. W dzienniku zapisujecie cel pomocy i sposób kontroli.</li>
+      <li>Rozwiązań notatników nie ma w repozytorium. Szkielet uzupełniacie sami, a testy pod każdym krokiem pokazują, czy wynik się zgadza.</li>
+    </ul>
+  </div>
+</section>
 
 <!-- ======================= A ======================= -->
 <section class="path" id="tab-A" role="tabpanel" hidden>
@@ -365,7 +421,7 @@ const stamp=()=>new Date().toISOString();
 function showTab(t){$$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===t)));$$('section.path').forEach(s=>s.hidden=s.id!=='tab-'+t);try{localStorage.setItem('pracownia-tab',t)}catch(e){}}
 $$('nav.tabs button').forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);try{history.replaceState(null,'','#'+b.dataset.tab)}catch(e){}
   const nav=$('nav.tabs');if(nav.getBoundingClientRect().top<=1)window.scrollTo({top:nav.offsetTop,behavior:'auto'});}));
-{let t=(location.hash||'').slice(1);if(!/^[A-E]$/.test(t)){try{t=localStorage.getItem('pracownia-tab')||'A'}catch(e){t='A'}}showTab(/^[A-E]$/.test(t)?t:'A');}
+{let t=(location.hash||'').slice(1);if(!/^[A-EP]$/.test(t)){try{t=localStorage.getItem('pracownia-tab')||'P'}catch(e){t='P'}}showTab(/^[A-EP]$/.test(t)?t:'P');}
 
 /* ======================= A ======================= */
 const A={
@@ -729,6 +785,90 @@ function updateE(){
 }
 
 renderA();renderB();renderC();renderD();renderE();
+
+/* ======================= Plan pracy ======================= */
+const NBURL=f=>`https://colab.research.google.com/github/p4welrog/decyzje/blob/main/notebooks/${f}`;
+const PLAN={
+ A:{name:'Dyskontowanie', guide:'A_Dyskontowanie_5-trial_Przewodnik', nb:'A_Dyskontowanie_z_aplikacja_szkielet.ipynb',
+    q:'31 pytań Multiple Choice A_N01–A_N31 w drzewie (start w węźle 16, kroki 8, 4, 2, 1), kody 1 = NOW, 2 = LATER; Survey Flow z rozgałęzieniami',
+    fields:'A_N01–A_N31, protocol_version A_v1, project_path A', time:'5–10 min',
+    result:'ED50 z tabeli 6 i k = 1/ED50; flaga wyniku granicznego',
+    val:'10 nowych decyzji (gotowy zestaw z przewodnika), baseline k0 = 0,01',
+    app:'kwota teraz albo 1000 zł za D dni; po serii modelowa wartość V i wyjaśnienie',
+    measure:'trafność na wspólnym zbiorze, pokrycie, tabela 2×2; przykład: 9/10 wobec 7/10',
+    traps:['ED50 to wartość z tabeli dla końcowego węzła i piątej odpowiedzi, a nie ostatnie pokazane odroczenie.',
+           'Pięć takich samych odpowiedzi to wynik graniczny: brak personalizacji, a nie skrajne k.',
+           'Jednostką D są dni. Pomylenie jednostek daje poprawnie wyglądające, ale błędne predykcje.',
+           'Wynik porównania zależy od k0. Ustalcie go przed testem i opiszcie w raporcie.']},
+ B:{name:'DOSPERT', guide:'B_DOSPERT_Przewodnik', nb:'B_DOSPERT_z_aplikacja_szkielet.ipynb',
+    q:'moduł W i osobny moduł R (po 30 pozycji, skala 1–7), opcjonalnie moduł B; macierze po 6 pozycji w kolejności źródłowej',
+    fields:'B_W01–B_W30, B_R01–B_R30 (B_B01–B_B30), protocol_version B_2006_v1, project_path B', time:'15–25 min',
+    result:'średnie W i R pięciu domen; kara c = 1 − (W − 1)/6 dla domeny rekreacyjnej',
+    val:'12 par z gotowej puli 16 scenariuszy (albo 8–12 własnych, uzgodnionych z prowadzącymi), baseline c0 = 0,8',
+    app:'dwa scenariusze popołudnia z pełnymi opisami, bez indeksów; po serii bilans korzyści i niepewności',
+    measure:'trafność, pokrycie, 2×2 oraz wrażliwość na mapowanie c′; przykład: 10/12 wobec 5/12',
+    traps:['Domenę wyznacza identyfikator pozycji, nie jej treść ani miejsce na stronie. Nie odwracajcie punktów.',
+           'Brak odpowiedzi to brak, a nie 4. Domena bez kompletu 6 pozycji jest niekompletna.',
+           'Mapowanie W → c jest Waszą hipotezą, a nie wynikiem DOSPERT. Nie wybierajcie mapowania po obejrzeniu odpowiedzi.',
+           'Pula dotyczy rekreacji. Inna domena wymaga własnej puli uzgodnionej z prowadzącymi.']},
+ C:{name:'Ekwiwalent pewności', guide:'C_Certainty_Equivalent_Przewodnik', nb:'C_Ekwiwalent_pewnosci_z_aplikacja_szkielet.ipynb',
+    q:'trzy listy po 9 wierszy (X = 100, 1000, 10 000 zł; kwota pewna 10–90% X), kody 1 = LOTTERY, 2 = SURE; bez automatycznego przełączania',
+    fields:'C_X100_01–09, C_X1000_01–09, C_X10000_01–09, protocol_version C_v1, project_path C', time:'15–25 min',
+    result:'przedziały CE, środek, q = CE/EV i status każdej listy',
+    val:'12 decyzji z gotowej reguły S1/S2 (albo 8–12 kwot dobranych przed sesją), baseline: większa EV',
+    app:'kwota pewna albo loteria 50% X zł i 50% 0 zł; po serii CE z zakresem niepewności',
+    measure:'trafność, pokrycie, 2×2, osobno S1 i S2, wrażliwość na skalę interpolacji; przykład: 10/12 wobec 8/12',
+    traps:['CE = 45 zł to środek przedziału 40–50 zł, a nie odpowiedź osoby. Raportujcie granice.',
+           'Lista z kilkoma przełączeniami albo bez przełączenia nie daje jednego CE i blokuje personalizację.',
+           'Brak odpowiedzi to brak, a nie SURE ani 0.',
+           'Skalę interpolacji (stake albo log_stake) wybieracie przed walidacją. Model nie ekstrapoluje poza 100–10 000 zł.']},
+ D:{name:'Framing', guide:'D_Framing_Przewodnik', nb:'D_Framing_z_aplikacja_szkielet.ipynb',
+    q:'10 par, każda w ramie zachowania i utraty (20 pytań), kody 1 = SAFE, 2 = RISKY; blok 1 i blok 2 rozdzielone zadaniem neutralnym',
+    fields:'D_P01_G … D_P10_L, protocol_version D_v1, project_path D', time:'15–25 min',
+    result:'Framing Index = pary ze zmianą / ważne pary, z kierunkami zmian',
+    val:'6 nowych par × 2 ramy: najpierw 12 wyborów wstępnych, potem etap z oboma opisami',
+    app:'etap 1: jeden opis i wybór A/B; etap 2: oba opisy, wyjaśnienie i wybór końcowy; obowiązkowe pytania o rozumienie i ocena transparentności',
+    measure:'udział i kierunek rewizji, rozumienie, transparentność; rozbieżność par po etapie 2 to tylko kontrola; bez accuracy',
+    traps:['Oba opisy generujcie z jednego rekordu liczbowego i sprawdźcie stany końcowe, nie tylko EV.',
+           'Uczestnik widzi opcje A i B. Kody SAFE/RISKY są techniczne.',
+           'FI nie jest odsetkiem błędów ani cechą osoby.',
+           'Wszystkie wybory wstępne zbieracie przed pokazaniem obu opisów. Zmiana po etapie 2 nie dowodzi lepszej decyzji.']},
+ E:{name:'Preferencje wielokryterialne', guide:'E_Preferencje_wielokryterialne_Przewodnik_szczegolowy', nb:'E_Hotel_z_aplikacja_szkielet.ipynb',
+    q:'zgoda, ważność 1–7, pytanie treningowe, Rank Order 5 swingów, remis, budżet, 4 kontrole spójności (1, 2, 3 = równe), 2 kontrole liniowości',
+    fields:'E_CONSENT, E_IMP_…, E_RANK_…, E_TIE, E_BUDGET, E_CONS_01–04, E_LIN_…, protocol_version E_v1, project_path E', time:'10–15 min',
+    result:'wagi ROC z rankingu swingów, status profilu, flagi tie_reported i nonlinear',
+    val:'12 par z kandydatów V01–V22 według stałej reguły, baseline: równe wagi 0,2',
+    app:'dwie karty hoteli; po serii rekomendacje z wkładem cech i dwie oceny 1–7',
+    measure:'trafność, pokrycie, 2×2, wrażliwość na wagi sumy rang; przykład: 9/12 wobec 7/12',
+    traps:['Do reguły trafiają wagi z rankingu swingów, a nie z deklarowanej ważności 1–7.',
+           'Zakresy są stałe. Nie normalizujcie każdej pary osobno.',
+           'Przy budżecie poniżej ok. 380 zł pula daje mniej niż 12 par. Nie podnoście budżetu za uczestnika, tylko zgłoście to prowadzącym przed sesją.',
+           'Okno anulowania to liczba godzin od rezerwacji. Używajcie tej definicji na każdym ekranie.']}
+};
+function renderPlan(L){
+  const p=PLAN[L];
+  $$('#P-pick button').forEach(b=>b.setAttribute('aria-checked',String(b.dataset.p===L)));
+  $('#P-facts').innerHTML=[['Ścieżka',`${L} · ${p.name}`],['Przewodnik',p.guide],['Wynik pomiaru',p.result],['Walidacja',p.val]]
+    .map(([k,v])=>`<div class="fact"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+  const st=[
+   ['Lektura i plan', '24.10', `Przeczytajcie przewodnik <b>${p.guide}</b>: najpierw część wprowadzającą i rozdziały 1–4, potem lekturę podstawową. Przejdźcie przykład P01 w zakładce <b>${L}</b> tej strony i upewnijcie się, że każdy w zespole umie wyjaśnić, skąd bierze się wynik. Podzielcie role: badanie, dane, implementacja, testy, dokumentacja.`, 'Dziennik: role, pytanie badawcze, decyzje.'],
+   ['Notatnik w trybie przykładu', '24.10', `Otwórzcie <a href="${NBURL(p.nb)}" target="_blank" rel="noopener">notatnik ścieżki ${L} w Colabie</a> i zapiszcie kopię na Dysku (<i>Plik → Zapisz kopię na Dysku</i>). Zostawcie <code>TRYB = 'przyklad'</code>. Uruchamiajcie komórki po kolei i uzupełniajcie luki <code># TODO</code>, aż wszystkie testy pokażą ✓. Nie zmieniajcie liczb w testach: to wartości z przewodnika.`, 'Gdzie: Colab, folder projekt_'+L+' na Dysku Google.'],
+   ['Protokół i ankieta w Qualtricsie', 'do 14.11', `Zbudujcie ankietę według rozdziału o Qualtricsie: ${p.q}. W Survey Flow dodajcie Embedded Data <code>participant_id</code>, <code>project_path</code>, <code>protocol_version</code>, <code>phase</code>, a przed zadaniami zgodę z gałęzią kończącą. Nazwy pól: <span class="mono">${p.fields}</span>. Notatnik czyta właśnie te nazwy.`, 'Dziennik: wersja procedury, codebook (pole → treść → kody).'],
+   ['Pilotaż i poprawki', 'do 14.11', `Wykonajcie wypełnienie próbne na członku zespołu (oznaczone jako pilot), pobierzcie CSV z wartościami liczbowymi i sprawdźcie odpowiedzi komórka po komórce. Wczytajcie ten plik do notatnika w trybie <code>wlasne</code> z <code>PARTICIPANT = 'PILOT'</code> (osobny folder), żeby sprawdzić eksport, scoring i statusy. Jeśli pilotaż ma inny kod fazy, np. <code>pilot</code>, podajcie go w wywołaniu <code>select_response(..., phase='pilot')</code>. Poprawcie usterki i zablokujcie wersję przed badaniem.`, 'Oddajecie: procedurę po pilotażu, zapis poprawek i specyfikację v1.'],
+   ['Badanie uczestnika', 'do 05.12', `Przeprowadźcie profilowanie jednej osoby (orientacyjnie ${p.time}). Pobierzcie eksport CSV i zachowajcie oryginał bez zmian.`, 'Dziennik: data, osoby, odstępstwa od procedury.'],
+   ['Profil w notatniku', 'do 05.12 / 12.12', `W notatniku ustawcie <code>TRYB = 'wlasne'</code> i kod uczestnika, uruchomcie komórki i wgrajcie eksport. Notatnik policzy profil (${p.result}) i zapisze <code>profil.csv</code>. Testy ogólne muszą przechodzić. Testy liczb przykładu wypiszą tylko Wasz wynik. Sprawdźcie status profilu i przygotujcie kartę przekazania według przewodnika.`, 'Oddajecie 05.12: dane, profil, roboczą kartę i 3 slajdy; 12.12: sprawdzony profil, kartę v1 i plan walidacji.'],
+   ['Nowe próby i zamrożenie', 'do 09.01', `Uruchomcie sekcje modelu i doboru prób: ${p.val}. Komórka zamrożenia zapisze <code>cases.csv</code> i <code>session_config.json</code> ze skrótem SHA-256. Skrót i ziarno losowania wpiszcie do dziennika <b>przed sesją</b>. Kontrola kontraktu musi pokazać same ✓. Po zamrożeniu notatnik nie nadpisze przypadków.`, 'Oddajecie: działający rdzeń (model.py), wersję modelu i zamrożony plan prób.'],
+   ['Próba aplikacji', 'przed sesją', `Uruchomcie aplikację na danych przykładu (tryb <code>przyklad</code>, osobny folder) i przejdźcie całą sesję jako członek zespołu. Sprawdźcie ekran na urządzeniu, którego użyjecie. Na sesję z uczestnikiem zalecamy laptop: pobierzcie z notatnika <code>pakiet_sesji_${L}.zip</code>, zainstalujcie <code>streamlit</code> i uruchomcie <code>streamlit run app.py -- --data .</code>`, 'Nie testujcie aplikacji w folderze uczestnika: zapisy trafiłyby do jego logu.'],
+   ['Sesja walidacyjna', 'przed 23.01', `Ta sama osoba przechodzi sesję w aplikacji: ${p.app}. Nie podpowiadajcie i nie otwierajcie widoku prowadzącego przy uczestniku. Po sesji skopiujcie <code>validation.csv</code> i <code>session_S01.json</code> do folderu uczestnika na Dysku.`, 'Dziennik: przebieg sesji, przerwy, uwagi uczestnika.'],
+   ['Analiza, raport i prezentacja', '23.01 → 06.02', `Uruchomcie notatnik w trybie <code>wlasne</code> do końca. Sekcja analizy czyta log aplikacji i liczy: ${p.measure}. Odpowiedzcie na pytania do raportu z ostatniej sekcji notatnika i opiszcie ograniczenia (N = 1). Na demo pokażcie jeden przypadek od odpowiedzi w Qualtricsie do wyniku w aplikacji.`, 'Finalna paczka: dziennik, prototyp (notatnik, model.py, pliki projektu, log), raport 6–8 stron, dane i prezentacja.']];
+  $('#P-steps').innerHTML=st.map(([t,w,body,where])=>`<li><b>${t}</b><span class="when">${w}</span><div>${body}</div><div class="where">${where}</div></li>`).join('');
+  $('#P-traps').innerHTML=p.traps.map(t=>`<li>${t}</li>`).join('');
+  try{localStorage.setItem('pracownia-plan',L)}catch(e){}
+}
+$('#P-pick').innerHTML='ABCDE'.split('').map(L=>`<button role="radio" data-p="${L}" aria-checked="false"><b>${L}</b> ${PLAN[L].name}</button>`).join('');
+$$('#P-pick button').forEach(b=>b.addEventListener('click',()=>renderPlan(b.dataset.p)));
+{let L='A';try{L=localStorage.getItem('pracownia-plan')||'A'}catch(e){}renderPlan(PLAN[L]?L:'A');}
+
 </script>
 </body>
 </html>
